@@ -662,3 +662,13 @@ Contains: Resource is out of sync with the file system: '/GameApplet/src/java/.D
 !MESSAGE Problems encountered while deleting resources.
 !SUBENTRY 4 org.eclipse.core.resources 4 274 2015-06-04 18:16:46.563
 !MESSAGE Resource is out of sync with the file system: '/GameApplet/src/java/.DS_Store'.
+!SESSION 2015-06-07 18:08:17.849 -----------------------------------------------
+eclipse.buildId=4.4.2.M20150204-1700
+java.version=1.8.0_31
+java.vendor=Oracle Corporation
+BootLoader constants: OS=macosx, ARCH=x86_64, WS=cocoa, NL=en_US
+Framework arguments:  -product org.eclipse.epp.package.jee.product -keyring /Users/mike7544/.eclipse_keyring -showlocation
+Command-line arguments:  -os macosx -ws cocoa -arch x86_64 -product org.eclipse.epp.package.jee.product -keyring /Users/mike7544/.eclipse_keyring -showlocation
+
+!ENTRY org.eclipse.core.net 1 0 2015-06-07 18:08:48.249
+!MESSAGE System property http.nonProxyHosts has been set to local|*.local|169.254/16|*.169.254/16 by an external source. This value will be overwritten using the values from the preferences
