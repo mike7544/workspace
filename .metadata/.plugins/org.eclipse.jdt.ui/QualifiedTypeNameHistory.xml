@@ -3,16 +3,23 @@
 <fullyQualifiedTypeName name="javax.swing.JFrame"/>
 <fullyQualifiedTypeName name="javax.swing.JButton"/>
 <fullyQualifiedTypeName name="javax.swing.JOptionPane"/>
+<<<<<<< HEAD
+=======
+<fullyQualifiedTypeName name="javax.swing.UIManager"/>
+>>>>>>> 556b45e75aed28e7098647c9bf1c00d9df3177c2
 <fullyQualifiedTypeName name="java.awt.BasicStroke"/>
 <fullyQualifiedTypeName name="java.io.InputStream"/>
 <fullyQualifiedTypeName name="java.net.URL"/>
 <fullyQualifiedTypeName name="java.applet.Applet"/>
 <fullyQualifiedTypeName name="javax.sound.sampled.AudioSystem"/>
 <fullyQualifiedTypeName name="javax.sound.sampled.Clip"/>
+<<<<<<< HEAD
 <fullyQualifiedTypeName name="java.awt.FlowLayout"/>
 <fullyQualifiedTypeName name="javax.swing.UIManager"/>
 <fullyQualifiedTypeName name="java.awt.Font"/>
 <fullyQualifiedTypeName name="javax.swing.ImageIcon"/>
 <fullyQualifiedTypeName name="java.awt.event.MouseEvent"/>
 <fullyQualifiedTypeName name="java.lang.Thread.State"/>
+=======
+>>>>>>> 556b45e75aed28e7098647c9bf1c00d9df3177c2
 </qualifiedTypeNameHistroy>

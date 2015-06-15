@@ -30,8 +30,13 @@
 	<section name="quick_assist_proposal_size">
 	</section>
 	<section name="completion_proposal_size">
+<<<<<<< HEAD
 		<item value="607" key="size.y"/>
 		<item value="713" key="size.x"/>
+=======
+		<item value="642" key="size.y"/>
+		<item value="610" key="size.x"/>
+>>>>>>> 556b45e75aed28e7098647c9bf1c00d9df3177c2
 	</section>
 	<section name="JavaElementSearchActions">
 	</section>
