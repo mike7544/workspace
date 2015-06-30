@@ -2,68 +2,37 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-<<<<<<< HEAD
-		<item value="button" key="selection"/>
+		<item value="public" key="selection"/>
 		<item value="true" key="casesensitive"/>
-=======
-		<item value="blockImage" key="selection"/>
-		<item value="false" key="casesensitive"/>
->>>>>>> 556b45e75aed28e7098647c9bf1c00d9df3177c2
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
-		<item value="false" key="wholeword"/>
+		<item value="true" key="wholeword"/>
 		<list key="findhistory">
-<<<<<<< HEAD
-			<item value="pushbutton"/>
-			<item value="glass"/>
-			<item value="Press"/>
+			<item value="private"/>
+			<item value="getImage"/>
+			<item value="getIcon"/>
 			<item value="endGame"/>
-			<item value="gameBoard"/>
-			<item value="gameProg"/>
-			<item value="gameScore2"/>
-			<item value="GameScore2"/>
+			<item value="quitGame"/>
+			<item value="playSound"/>
+			<item value="pressAnyKey"/>
+			<item value="savePlayerScore"/>
 		</list>
 		<list key="replacehistory">
-			<item value="button"/>
-			<item value="gel"/>
-			<item value="metal"/>
-			<item value="pushbutton"/>
-			<item value="game"/>
-			<item value="gameScore"/>
-			<item value="GameScore"/>
-			<item value="Tetris"/>
-=======
-			<item value="blockImage"/>
-			<item value="loadGameSound"/>
-			<item value="countWaitTime"/>
-			<item value="dropDown"/>
-			<item value="checkAnimatedTime"/>
-			<item value="checkIfRowIsFull"/>
-			<item value="addObjectToBackground"/>
-			<item value="MAX_WAIT_TIME"/>
-		</list>
-		<list key="replacehistory">
-			<item value="getGameSound"/>
-			<item value="dropBlock"/>
-			<item value="isTimeAnimated"/>
-			<item value="checkGameBoardRow"/>
-			<item value="tetrisBlockDrop"/>
-			<item value="blockHitOtherObjects"/>
-			<item value="displayGameStatistics"/>
-			<item value="messageImage"/>
->>>>>>> 556b45e75aed28e7098647c9bf1c00d9df3177c2
+			<item value="public"/>
+			<item value="image.getImage"/>
+			<item value="image.getIcon"/>
+			<item value="btnStart"/>
+			<item value="btnScore"/>
+			<item value="drawGameStatistics"/>
+			<item value="drawGameMessage"/>
+			<item value="block_bold"/>
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
 		<item value="265" key="DIALOG_WIDTH"/>
 		<item value="1|.Helvetica Neue DeskInterface|11.0|0|COCOA|1|.HelveticaNeueDeskInterface-Regular" key="DIALOG_FONT_NAME"/>
 		<item value="399" key="DIALOG_HEIGHT"/>
-<<<<<<< HEAD
-		<item value="814" key="DIALOG_X_ORIGIN"/>
-		<item value="78" key="DIALOG_Y_ORIGIN"/>
-=======
-		<item value="850" key="DIALOG_X_ORIGIN"/>
-		<item value="153" key="DIALOG_Y_ORIGIN"/>
->>>>>>> 556b45e75aed28e7098647c9bf1c00d9df3177c2
+		<item value="684" key="DIALOG_X_ORIGIN"/>
+		<item value="235" key="DIALOG_Y_ORIGIN"/>
 	</section>
 </section>

@@ -1,17 +1,26 @@
 package games;
 
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -26,19 +35,25 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 
-
 @SuppressWarnings("serial")
 public class TetrisApplet extends JApplet implements  ActionListener {
+
+
 	
 	
 	private Timer appTimer;
 	static final int APP_WIDTH = 800;
 	static final int APP_HEIGHT = 600;
+	static final int APP_GAME = 1;
+	static final int APP_SCORE = 2;
+	static final int APP_MENU = 3;
 	private int choice;
 	
 	private StartMenu startMenu = null;
 	private GameScore gameScore = null;
 	private Tetris game = null;
+	
+	
 	
 	public void init() {
 		
@@ -64,280 +79,406 @@ public class TetrisApplet extends JApplet implements  ActionListener {
 		
 		this.setFocusable(true);
 		this.requestFocus();
-		choice = 1;
+		
+		choice = APP_GAME;
 		
 	}
 	
 	public void start() {
 		appTimer.start();
-			choice = 1;
-			
-			switch(choice) {
-			case 1:
-				game.repaint();
-				game.setVisible(true);
-				break;
-			case 2:
 
-				gameScore.repaint();
-				gameScore.setVisible(true);
-				break;
-			case 3:
-				startMenu.repaint();
-				startMenu.setVisible(true);				
-				break;
-				
-			}
-			choice = 0;
+		switch (choice) {
+		case APP_GAME:
+			game.repaint();
+			game.setVisible(true);
+			break;
+		case APP_SCORE:
+			gameScore.repaint();
+			gameScore.setVisible(true);
+			break;
+		case APP_MENU:
+			startMenu.repaint();
+			startMenu.setVisible(true);
+			break;
+		}
 	}
-	
+	/*
+	public void paint(Graphics g) {
+		String userName = this.getParameter("user_name");
+		g.drawString("Hello " + userName, 300, 100);
+	}
+	*/
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		
 		choice = startMenu.getChoice();
 		startMenu.resetChoice();
 		
-		if(choice == 1 || choice == 2 ) {
-			
+		if (choice == 1 || choice == 2) {
 			startMenu.setVisible(false);
+			game.resetGame();
 		}
 		
-		if(game != null) {
-			if(game.quit()) {
-				game.setVisible(false);
-				game.resetGame();
-				choice = 3;
-			}
+		if (game.quit()) {
+			game.setVisible(false);
+			choice 
+			= 3;
+		}
+		if (gameScore.exit()) {
+			gameScore.setVisible(false);
+			gameScore.resetExit();
+			choice = 3;
 		}
 		
-		if(gameScore != null) {
-			if(gameScore.exit()) {
-				gameScore.setVisible(false);
-				gameScore.resetExit();
-				choice = 3;
-			}
-		}
-	
 		this.start();
-		
 	}
+	
 
 }
 
-class StartMenu extends JPanel implements ActionListener {
-	private static final long serialVersionUID = 1L;
-	
-	private JButton btnRed;
-	private JButton btnYellow; 
-	private BufferedImage backgroundImage;
-	
-	private int choice;
-	
-	public StartMenu() {
-		this.setLayout(null);
-		
-		backgroundImage = getImage("background_startmenu.jpg");
-		ImageIcon startIcon = getIcon("btn_start.png");
-	
-		btnRed = new JButton(startIcon);//(getIcon("btn_start.png"));
-		btnRed.setOpaque(false);
-		btnRed.setContentAreaFilled(false);
-		btnRed.setBorderPainted(false);
-		btnRed.setFocusPainted(false);
-		btnRed.setBounds(500, 80, 270, 100);
-		btnRed.addActionListener(this);
-		
-		btnRed.addMouseListener(new MouseAdapter() {
-			public void mouseEntered(MouseEvent event) {
-				btnRed.setIcon(getIcon("btn_start_mouseover.png"));
-			}
-			public void mouseExited(MouseEvent event) {
-				btnRed.setIcon(getIcon("btn_start.png"));
-			}
-			public void mousePressed(MouseEvent event){
-				choice = 1;
-			}
-		});
-		add(btnRed);
-		
-		btnYellow = new JButton(getIcon("btn_score.png"));
-		btnYellow.setOpaque(false);
-		btnYellow.setContentAreaFilled(false);
-		btnYellow.setBorderPainted(false);
-		btnYellow.setFocusPainted(false);
-		btnYellow.setBounds(500, 200, 270, 100);
-		btnYellow.addActionListener(this);
-		btnYellow.addMouseListener(new MouseAdapter() {
-			public void mouseEntered(MouseEvent event) {
-				btnYellow.setIcon(getIcon("btn_score_mouseover.png"));
-			}
-			public void mouseExited(MouseEvent event) {
-				btnYellow.setIcon(getIcon("btn_score.png"));
-			}
-			public void mousePressed(MouseEvent event){
-				//btnYellow.setIcon(getIcon("btn_score_mouseover.png"));
 
-				choice = 2;
+class StartMenu extends JPanel {
+	private static final long serialVersionUID = 1L;
+	private static final int BTN_START = 1;
+	private static final int BTN_SCORE = 2;
+
+	private JButton btnStart;
+	private JButton btnScore;
+	private BufferedImage backgroundImage;
+	private MyImage image;
+	private int choice;
+
+	public StartMenu() {
+		
+		this.setLayout(null);
+		image = new MyImage();
+		backgroundImage = image.getImage("background_startmenu.jpg");
+
+		btnStart = new JButton(image.getIcon("btn_start.png"));
+		btnStart.setOpaque(false);
+		btnStart.setContentAreaFilled(false);
+		btnStart.setBorderPainted(false);
+		btnStart.setFocusPainted(false);
+		btnStart.setBounds(500, 80, 270, 100);
+
+		btnStart.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent event) {
+				btnStart.setIcon(image.getIcon("btn_start_mouseover.png"));
+			}
+
+			public void mouseExited(MouseEvent event) {
+				btnStart.setIcon(image.getIcon("btn_start.png"));
+			}
+
+			public void mousePressed(MouseEvent event) {
+				choice = BTN_START;
 			}
 		});
-		
-		add(btnYellow);
+		add(btnStart);
+
+		btnScore = new JButton(image.getIcon("btn_score.png"));
+		btnScore.setOpaque(false);
+		btnScore.setContentAreaFilled(false);
+		btnScore.setBorderPainted(false);
+		btnScore.setFocusPainted(false);
+		btnScore.setBounds(500, 200, 270, 100);
+		btnScore.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent event) {
+				btnScore.setIcon(image.getIcon("btn_score_mouseover.png"));
+			}
+
+			public void mouseExited(MouseEvent event) {
+				btnScore.setIcon(image.getIcon("btn_score.png"));
+			}
+
+			public void mousePressed(MouseEvent event) {
+				choice = BTN_SCORE;
+			}
+		});
+
+		add(btnScore);
 
 		choice = 0;
-	
+
 	}
-	public ImageIcon getIcon(String filename) {
-		ImageIcon icon = null;
-		
-		String filePath = "/images/" + filename;
-		
-		try {
-			 icon = new ImageIcon(getClass().getResource(filePath));
-		}
-		
-		catch (Exception ex) {
-			System.out.println("file " + filePath + " not found");
-		}
-		
-		return icon;
-	}
-	
-	public BufferedImage getImage(String filename) {
-		BufferedImage tempImage = null;
-		
-		String filePath = "/images/" + filename;
-		
-		try {
-			tempImage = ImageIO.read(getClass().getResource(filePath));
-		}
-		
-		catch (Exception ex) {
-			System.out.println("file " + filePath + " not found");
-		}
-		
-		return tempImage;
-	}
-	
-	public void actionPerformed(ActionEvent e) {
-	    if(e.getActionCommand().equals("red")) 
-			choice = 1;
-		
-	    else if (e.getActionCommand().equals("yellow"))
-			choice = 2;
-	   System.out.println(choice);
-	}
-	
+
 	public void paintComponent(Graphics g) {
 		super.paintComponents(g);
 		Graphics2D g2d = (Graphics2D) g;
-		g2d.drawImage(backgroundImage, 0,0,getWidth(),getHeight(),null);
-		
-		//g.setColor(Color.pink);
-		//g.fillRect(0, 0,getWidth(),getHeight());
+		g2d.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), null);
+
 
 	}
+
 	public void resetChoice() {
 		choice = 0;
 	}
+
 	public int getChoice() {
 		return choice;
 	}
-	
-	
-}
-class GameScore1  extends JPanel implements ActionListener {
-	private static final long serialVersionUID = 1L;
-	private JButton btnCancel = new JButton("exit");
-	
-	private boolean endProgram;
-	
-	public GameScore1 () {
-		endProgram = false;
-		btnCancel.addActionListener(this);
-		add(btnCancel);
-	}
-	@Override
-	public void paintComponent(Graphics g) {
-		super.paintComponents(g);
-		g.setColor(Color.red);
-		g.fillRect(0, 0,getWidth(),getHeight());
-	}
-	
-	public boolean exit() {
-		return endProgram;
-	}
-	public void resetExit() {
-		endProgram = !endProgram;
-	}
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		if(e.getActionCommand().equals("exit")) 
-			endProgram = true;
-		
-	}
-	
-	
+
 }
 
-class GameScore  extends JPanel implements ActionListener {
-	private static final long serialVersionUID = 2L;
-	private JButton btnCancel = new JButton("exit");
-	
-	private boolean endProgram;
-	
-	public GameScore () {
-		endProgram = false;
-		btnCancel.addActionListener(this);
-		add(btnCancel);
+
+class GameRecords {
+	private String name;
+	private int score;
+	private int level;
+	private Date date;
+
+	public String getName() {
+		return name;
 	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public int getScore() {
+		return score;
+	}
+
+	public void setScore(int score) {
+		this.score = score;
+	}
+
+	public int getLevel() {
+		return level;
+	}
+
+	public void setLevel(int level) {
+		this.level = level;
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	public String toString() {
+		return "name = " + name + " score = " + score + " level = " + level
+				+ " date = " + date;
+	}
+
+}
+
+class GameScore extends JPanel {
+	private static final long serialVersionUID = 2L;
+
+	ArrayList<GameRecords> records;
+	private boolean endProgram;
+	private JButton btnExit;
+	private BufferedImage bkgdImage;
+	private BufferedImage logoTitleImage;
+	private BufferedImage logoMenuImage;
+	private MyImage image;
+	
+	public GameScore() {
+		setLayout(null);
+		image = new MyImage();
+		
+		ImageIcon exitIcon = image.getIcon("btn_exit.png");
+
+		btnExit = new JButton(exitIcon);
+		btnExit.setOpaque(false);
+		btnExit.setContentAreaFilled(false);
+		btnExit.setBorderPainted(false);
+		btnExit.setFocusPainted(false);
+		btnExit.setBounds(300, 525, 200, 50);
+
+		btnExit.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent event) {
+				btnExit.setIcon(image.getIcon("btn_exit_mouseover.png"));
+				
+			}
+
+			public void mouseExited(MouseEvent event) {
+				btnExit.setIcon(image.getIcon("btn_exit.png"));
+			}
+
+			public void mousePressed(MouseEvent event) {
+				endProgram = true;
+			}
+		});
+		add(btnExit);
+
+		endProgram = false;
+		records = new ArrayList<>();
+		bkgdImage = image.getImage("bkgd_green_grid.jpg");
+		logoTitleImage = image.getImage("logo_score_title.png");
+		logoMenuImage = image.getImage("logo_score_menu.png");
+	}
+
+	public void getTopScore() {
+		try {
+			getRecords();
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void getRecords() throws ClassNotFoundException, SQLException {
+		String queryStatement = "select name, score, level, date "
+				+ "from records order by score desc";
+		Class.forName("com.mysql.jdbc.Driver");
+		Connection connection = DriverManager.getConnection(
+				"jdbc:mysql://localhost/MikeGames", "root", "pumkin");
+
+		PreparedStatement statement = connection
+				.prepareStatement(queryStatement);
+		ResultSet result = statement.executeQuery();
+
+		int index = 0;
+		System.out.println("get records!!!");
+		while (result.next()) {
+			GameRecords tempRecords = new GameRecords();
+
+			tempRecords.setName(result.getString(1));
+			tempRecords.setScore(result.getInt(2));
+			tempRecords.setLevel(result.getInt(3));
+			tempRecords.setDate(result.getDate(4));
+
+			records.add(index, tempRecords);
+			index++;
+		}
+
+		if (connection != null)
+			connection.close();
+		if (statement != null)
+			statement.close();
+		if (result != null)
+			result.close();
+
+	}
+
+	public void displayTopScore(Graphics2D g2d) {
+		int x = 0;
+		int y = 100;
+		int index = 1;
+
+		g2d.drawImage(logoTitleImage, 275, 25, null);
+		g2d.drawImage(logoMenuImage, 150, 75, null);
+		g2d.setFont(new Font("Comic Sans MS", Font.BOLD, 24));
+
+		if (records.size() > 0)
+			for (int i = 0; i < 10; i++) {
+
+				y += 40;
+				x = 150;
+
+				g2d.drawString(index + "", x - 50, y);
+
+				g2d.drawString(records.get(i).getName(), x, y);
+				x += 150;
+
+				g2d.drawString(records.get(i).getScore() + "", x, y);
+				x += 170;
+
+				g2d.drawString(records.get(i).getLevel() + "", x, y);
+				x += 90;
+				g2d.drawString(records.get(i).getDate() + "", x, y);
+
+				if (index > records.size() - 1)
+					break;
+				else
+					index++;
+
+			}
+	}
+
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponents(g);
-		g.setColor(Color.yellow);
-		g.fillRect(0, 0,getWidth(),getHeight());
+		Graphics2D g2d = (Graphics2D) g;
+
+		if (records.size() == 0) {
+			getTopScore();
+		}
+		g2d.drawImage(bkgdImage, 0, 0, getWidth(), getHeight(), null);
+
+		g2d.setColor(Color.white);
+		setRenderingFonts(g2d);
+
+		displayTopScore(g2d);
 	}
-	
+
+	private void setRenderingFonts(Graphics2D g2d) {
+		RenderingHints rh = new RenderingHints(RenderingHints.KEY_ANTIALIASING,
+				RenderingHints.VALUE_ANTIALIAS_ON);
+
+		rh.put(RenderingHints.KEY_RENDERING,
+				RenderingHints.VALUE_RENDER_QUALITY);
+
+		g2d.setRenderingHints(rh);
+	}
+
 	public boolean exit() {
 		return endProgram;
 	}
+
 	public void resetExit() {
 		endProgram = !endProgram;
+		records.clear();
 	}
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		if(e.getActionCommand().equals("exit")) 
-			endProgram = true;
-		
+}
+
+class MyImage {
+
+	public ImageIcon getIcon(String filename) {
+		return new ImageIcon(getImage(filename));
+
 	}
-	
-	
+
+	public BufferedImage getImage(String filename) {
+		BufferedImage tempImage = null;
+
+		String filePath = "/images/" + filename;
+
+		try {
+			tempImage = ImageIO.read(getClass().getResourceAsStream(filePath));
+		}
+
+		catch (Exception ex) {
+			System.out.println("file " + filePath + " not found");
+		}
+
+		return tempImage;
+	}
 }
 @SuppressWarnings("serial")
-class Tetris extends JPanel implements KeyListener, ActionListener {
-	
+class Tetris extends JPanel implements KeyListener, ActionListener,
+		MouseListener {
+
 	private final static int AMOUNT_OF_BLOCKS = 6;
 	private final static int ROTATE_AMOUNT = 3;
 
 	private final static int BLOCK_WIDTH = 4;
 	private final static int BLOCK_HEIGHT = 4;
-	
+
 	private final static int BLOCK_POS_X = 175;
 	private final static int BLOCK_POS_Y = 50;
 	private final static int BLOCK_SIZE = 25;
-	
+
 	private final static int BOARD_WIDTH = 10;
 	private final static int BOARD_HEIGHT = 20;
 	private final static int BOARD_POS_X = 125;
 	private final static int BOARD_POS_Y = 75;
-	
+
 	private final static int NEXT_BLOCK_POS_X = 475;
 	private final static int NEXT_BLOCK_POS_Y = 125;
-	private final static int THEMES_TOTAL = 11;
-	private final static int BKGD_TOTAL = 12;
+	private final static int BLOCK_THEMES_TOTAL = 10;
+	private final static int BKGD_TOTAL = 15;
+	private final static int BLOCK_SPEED = 550;
+
+	private final static int GAME_POINTS = 250;
+	private final static int GAME_MOVE_UP_LEVEL = 20;
 	private int gameSpeed;
 	private Timer gameTimer;
-	
-	private int blockType; 
+
+	private int blockType;
 	private int nextBlockType;
 	private int rotateBlock;
 	private int blockLocateX;
@@ -347,226 +488,231 @@ class Tetris extends JPanel implements KeyListener, ActionListener {
 	private int gameLevel;
 	private int countLines;
 	private int totalLines;
+
 	
 	private boolean pauseGame;
 	private boolean turnOnGrid;
 	private boolean endGame;
 	private boolean escKeyPress;
+
 	private boolean soundOn;
 	private boolean justStarted;
 	private boolean quitGame;
-	
+
+	private boolean overrideCommand;
+
 	private GameObject gameBlock;
 	private GameObject gameBoard;
 	private GameObject nextBlock;
-	
+
 	private BufferedImage[][] blockImage;
 	private BufferedImage[] backgroundImage;
 	private BufferedImage endGameImage;
 	private BufferedImage soundOnImage;
 	private BufferedImage soundOffImage;
 	private BufferedImage controlKeyImage;
-	//private BufferedImage pauseGameImage;
 	private BufferedImage messageImage;
-	
+
 	private BufferedImage logoTextLevel;
 	private BufferedImage logoTextLines;
 	private BufferedImage logoTextNext;
 	private BufferedImage logoTextScore;
-	
+
 	private int animateTime;
-	private int gameTheme;
+	private int blockTheme;
 	private int backgroundTheme;
-	
+	private MyImage image;
 	
 	public Tetris() {
 		
 		gameBlock = new GameObject();
 		gameBoard = new GameObject();
 		nextBlock = new GameObject();
-		blockImage = new BufferedImage[THEMES_TOTAL][7];
+		blockImage = new BufferedImage[BLOCK_THEMES_TOTAL][7];
 		backgroundImage = new BufferedImage[BKGD_TOTAL];
-		
-		int[] boardGrid  = new int[BOARD_WIDTH * BOARD_HEIGHT];
+		soundOn = true;
 
-		gameBoard.setObject(boardGrid,BOARD_WIDTH,BOARD_HEIGHT,BLOCK_SIZE);
-		gameBoard.setPosition(BOARD_POS_X, BOARD_POS_Y);
-
+		image = new MyImage();
 		loadGameImage();
 		setNextBlock();
-		setBlocks();
-		
-		gameSpeed = 550;
-		totalScore = 0;
-		gameLevel = 0;
-		
-		totalLines = 0;
-		countLines = 0;
-		
-		pauseGame = false;
-		endGame = false;
-		escKeyPress = false;
-		turnOnGrid = false;
-		soundOn = false;
-		justStarted = true;
-		quitGame = false;
-		
-		gameTheme = THEMES_TOTAL;
-		backgroundTheme = 0;
-		
-		gameTimer = new Timer(gameSpeed,this);
-		
+		setGame();
+
+		gameTimer = new Timer(gameSpeed, this);
+		this.addMouseListener(this);
 		this.addKeyListener(this);
 		this.setFocusable(true);
 		this.requestFocus();
-		
-	}
-	
-	
 
-	public boolean quit() {
-		return false;//endGame;
 	}
-	public void resetGame() {
-		gameSpeed = 550;
+	
+	public void setGame() {
+
+		setBlocks();
+
+		int[] boardGrid = new int[BOARD_WIDTH * BOARD_HEIGHT];
+
+		gameBoard.setObject(boardGrid, BOARD_WIDTH, BOARD_HEIGHT, BLOCK_SIZE);
+		gameBoard.setPosition(BOARD_POS_X, BOARD_POS_Y);
+
+		gameSpeed = BLOCK_SPEED;
 		totalScore = 0;
-		gameLevel = 0;
-		
+		gameLevel = 1;
+
 		totalLines = 0;
 		countLines = 0;
-		
-		pauseGame = true;
+
+		pauseGame = false;
 		endGame = false;
 		escKeyPress = false;
-		turnOnGrid = false;
-		soundOn = false;
-		
-		gameTheme = THEMES_TOTAL;
-		backgroundTheme = 0;
-		gameBoard = null;
-		
-		setNextBlock();
-		setBlocks();
-		
-		int[] boardGrid  = new int[BOARD_WIDTH * BOARD_HEIGHT];
-		gameBoard = new GameObject();
 
-		gameBoard.setObject(boardGrid,BOARD_WIDTH,BOARD_HEIGHT,BLOCK_SIZE);
-		gameBoard.setPosition(BOARD_POS_X, BOARD_POS_Y);
+		turnOnGrid = false;
+		justStarted = true;
+		quitGame = false;
+
+		overrideCommand = false;
+
+		blockTheme = BLOCK_THEMES_TOTAL;
+		backgroundTheme = 0;
+
+		setBlocks();
+
 	}
+
+	public boolean quit() {
+		return endGame;
+	}
+
+	public void resetGame() {
+		setGame();
+	}
+
 	public BufferedImage getImage(String filename) {
 		BufferedImage tempImage = null;
-		
+
 		String filePath = "/images/" + filename;
-		
 		try {
-			tempImage = ImageIO.read(getClass().getResource(filePath));
+			
+			tempImage = ImageIO.read(getClass().getResourceAsStream(filePath));
+			
 		}
-		
+
 		catch (Exception ex) {
 			System.out.println("file " + filePath + " not found");
 		}
-		
+
 		return tempImage;
 	}
+
 	public void loadGameImage() {
-		String[][] pic = 
-			{
-			{"block_cyan.png","block_yellow.png","block_blue.png",
-			 "block_lightgreen.png","block_darkblue.png","block_green.png",
-			 "block_red.png"}, 
-			 
-			{"block_pushbutton_blue.png","block_pushbutton_green.png","block_pushbutton_red.png",
-			 "block_pushbutton_purple.png","block_pushbutton_orange.png","block_pushbutton_yellow.png",
-			 "block_pushbutton_cyan.png"},
-			 
-			{"iron_blue_block.png","iron_darkblue_block.png","iron_green_block.png",
-			 "iron_orange_block.png","iron_purple_block.png","iron_red_block.png",
-			 "iron_yellow_block.png"},
-			 
-			{"block_metal_blue.png","block_metal_green.png","block_metal_red.png",
-			  "block_metal_purple.png","block_metal_orange.png","block_metal_yellow.png",
-			  "block_metal_cyan.png"},
-			  
-		    {"block_button_blue.png","block_button_green.png","block_button_red.png",
-			 "block_button_purple.png","block_button_orange.png","block_button_yellow.png",
-			 "block_button_cyan.png"},
-			 
-		    {"emoji_blue.png","emoji_darkblue.png","emoji_green.png",
-			 "emoji_pink.png","emoji_purple.png","emoji_red.png",
-			 "emoji_yellow.png"},
-				 
-		   {"block_gel_blue.png","block_gel_green.png","block_gel_red.png",
-			"block_gel_purple.png","block_gel_orange.png","block_gel_yellow.png",
-			"block_gel_cyan.png"},
-			 
-			{"tube_blue_block.png","tube_cyran_block.png","tube_green_block.png",
-			 "tube_orange_block.png","tube_purple_block.png","tube_red_block.png",
-			 "tube_yellow_block.png"},
-			 
-			{"block_ball_baseball.png","block_ball_baskitball.png","block_ball_beach.png",
-			 "block_ball_football.png","block_ball_soccer.png","block_ball_volley.png",
-			 "block_ball_yellow_soccer.png"},
-				 
-			{"block_mushroom_blue02.png","block_mushroom_brown.png","block_mushroom_green.png",
-			 "block_mushroom_orange.png","block_mushroom_purple.png","block_mushroom_red02.png",
-			 "block_mushroom_lightblue.png"},
-			 
-		   {"block_dragonball_01.png","block_dragonball_02.png","block_dragonball_03.png",
-			"block_dragonball_04.png","block_dragonball_05.png","block_dragonball_06.png",
-			"block_dragonball_07.png"}
-			 
-			};
-		
-		
-		for(int k = 0; k < THEMES_TOTAL; k++)
+		String[][] pic = {
+
+				{ "block_bold_cyan.png", "block_bold_yellow.png",
+						"block_bold_blue.png", "block_bold_lightgreen.png",
+						"block_bold_darkblue.png", "block_bold_green.png",
+						"block_bold_red.png" },
+
+				{ "block_pushbutton_blue.png", "block_pushbutton_green.png",
+						"block_pushbutton_red.png",
+						"block_pushbutton_purple.png",
+						"block_pushbutton_orange.png",
+						"block_pushbutton_yellow.png",
+						"block_pushbutton_cyan.png" },
+
+				{ "iron_blue_block.png", "iron_darkblue_block.png",
+						"iron_green_block.png", "iron_orange_block.png",
+						"iron_purple_block.png", "iron_red_block.png",
+						"iron_yellow_block.png" },
+
+				{ "block_metal_blue.png", "block_metal_green.png",
+						"block_metal_red.png", "block_metal_purple.png",
+						"block_metal_orange.png", "block_metal_yellow.png",
+						"block_metal_cyan.png" },
+
+				{ "block_gel_blue.png", "block_gel_green.png",
+						"block_gel_red.png", "block_gel_purple.png",
+						"block_gel_orange.png", "block_gel_yellow.png",
+						"block_gel_cyan.png" },
+
+				{ "emoji_blue.png", "emoji_darkblue.png", "emoji_green.png",
+						"emoji_pink.png", "emoji_purple.png", "emoji_red.png",
+						"emoji_yellow.png" },
+
+				{ "block_mushroom_blue02.png", "block_mushroom_brown.png",
+						"block_mushroom_green.png",
+						"block_mushroom_orange.png",
+						"block_mushroom_purple.png",
+						"block_mushroom_red02.png",
+						"block_mushroom_lightblue.png" },
+
+				{ "block_button_blue.png", "block_button_green.png",
+						"block_button_red.png", "block_button_purple.png",
+						"block_button_orange.png", "block_button_yellow.png",
+						"block_button_cyan.png" },
+
+				{ "block_dragonball_01.png", "block_dragonball_02.png",
+						"block_dragonball_03.png", "block_dragonball_04.png",
+						"block_dragonball_05.png", "block_dragonball_06.png",
+						"block_dragonball_07.png" },
+
+				{ "block_ball_baseball.png", "block_ball_baskitball.png",
+						"block_ball_beach.png", "block_ball_football.png",
+						"block_ball_soccer.png", "block_ball_volley.png",
+						"block_ball_yellow_soccer.png" }
+		};
+
+		for(int k = 0; k < BLOCK_THEMES_TOTAL; k++)
 			for(int i = 0; i < 7; i++) 
 				blockImage[k][i] = getImage( pic[k][i]);
 		
 		String[] bkgdImage = {
 			"bkgd_building.jpg",
-			"bkgd_darkred_bricks.jpg",
 			"bkgd_gravel.jpg",
-			"bkgd_playgame.jpg",
-			"bkgd_black_bricks.jpg",
+			"bkgd_food.jpg",
 			"bkgd_live.jpg",
-			"bkgd_grey_bricks.jpg",		
-			"bkgd_jungle.jpg",		
-			"bkgd_mario.jpg",			
-			"bkgd_rockandsky.jpg",	
-			"bkgd_tetris.jpg",
+			"bkgd_wave.jpg",
+			"bkgd_playgame.jpg",
 			"bkgd_crack.jpg",
+			"bkgd_mario.jpg",			
+			"bkgd_colors.jpg",
+			"bkgd_rockandsky.jpg",
+			"bkgd_grey_bricks.jpg",		
+			"bkgd_earth.jpg",
+			"bkgd_darkred_bricks.jpg",
+			"bkgd_jungle.jpg",
+			"bkgd_black_bricks.jpg"};
 		
-			};
-		
-		for(int i = 0; i < BKGD_TOTAL; i++)
-			backgroundImage[i] = getImage(bkgdImage[i]);
-		
-		//pauseGameImage = getImage("pause_logo.png");
-		endGameImage = getImage("logo_endgame.png");
-		messageImage = getImage("logo_press_esc.png");
-		controlKeyImage = getImage("logo_control_keys.png");
-		soundOnImage = getImage("logo_sound_on.png");
-		soundOffImage = getImage("logo_sound_off.png");
-		
-		logoTextLevel = getImage("logo_text_level.png");
-		logoTextLines = getImage("logo_text_lines.png");
-		logoTextNext = getImage("logo_text_next.png");
-		logoTextScore = getImage("logo_text_score.png");
+		for (int i = 0; i < BKGD_TOTAL; i++)
+			backgroundImage[i] = image.getImage(bkgdImage[i]);
 
-		
+		endGameImage = image.getImage("logo_endgame.png");
+		messageImage = image.getImage("logo_press_esc.png");
+		controlKeyImage = image.getImage("logo_control_keys.png");
+		soundOnImage = image.getImage("logo_sound_on.png");
+		soundOffImage = image.getImage("logo_sound_off.png");
+
+		logoTextLevel = image.getImage("logo_text_level.png");
+		logoTextLines = image.getImage("logo_text_lines.png");
+		logoTextNext = image.getImage("logo_text_next.png");
+		logoTextScore = image.getImage("logo_text_score.png");
+
 	}
+
 	public void playSound(int index) {
-		String[] filename = {"instant_drop.wav", "remove.wav"};
+		String[] filename = { "instant_drop.wav", 
+				"remove_blocks.wav",
+				"rotate.wav",
+				"sound8.wav"};
+				//"sound56.wav"};
 		
-		loadGameSound(filename[index]);
+		if(soundOn)
+			loadGameSound(filename[index]);
 	}
 	
 	public void loadGameSound(String filename) {
 		
 		try {
 			
-			Clip clip = AudioSystem.getClip();
+			 Clip clip = AudioSystem.getClip();
 			
 			AudioInputStream inputStream = AudioSystem.getAudioInputStream(
 					Tetris.class.getResourceAsStream("/sounds/" + filename));
@@ -575,16 +721,18 @@ class Tetris extends JPanel implements KeyListener, ActionListener {
 			clip.start();
 			
 		} catch(Exception ex) {
-			System.out.println("can't find wav file");
+			System.out.println("can't find " + filename + " file");
 		}
+		
 	}
+	public void loadGameSound2(String filename) {
 	
 	
+	}
 	
 	public boolean isTimeAnimated() {
 		if (animateTime % 2 > 0) 
 			return true;
-		
 		return false;
 		
 	}
@@ -593,53 +741,56 @@ class Tetris extends JPanel implements KeyListener, ActionListener {
 			gameBoard.invertRow();
 			countLines ++;
 		}
+		
 		if(countLines > 0)
 			animateTime = 5;
 			
 	}
 	public void setGameStatistics() {
-		final int POINTS = 375;
-		final int MOVE_UP_LEVEL = 20;
-		
 		
 		if(countLines > 0) {
-			totalScore += countLines * POINTS;
+			totalScore += countLines * GAME_POINTS;
 			totalLines += countLines;
 			countLines = 0;
 		}
-		gameLevel = (totalLines / MOVE_UP_LEVEL) + 1;
+		if(!overrideCommand)
+		gameLevel = (totalLines / GAME_MOVE_UP_LEVEL) + 1;
 	}
 	@Override
 	public void paintComponent(Graphics g) {
 		this.paintComponents(g);
-		
-		gameTimer.start();
-		
 		Graphics2D g2d =  (Graphics2D) g;
 		
-		//updateTetris();
-		checkGameBoardRow();
-			
-		if(animateTime == 0)
-			gameBoard.dropBlock();
 		
+		updateTetris();
+		int tempLevel = gameLevel;
+		
+		
+		gameTimer.start();
+		checkGameBoardRow();
+	
+		if(animateTime == 0) 
+			gameBoard.dropBlock();
 		else
 			animateTime --;
 
-		if(animateTime == 4 && soundOn)
+		if(animateTime == 4)
 			playSound(1);
 		
 		setGameStatistics();
 		setGameSpeed();
 		drawGameSprites(g2d);
+		if(tempLevel != gameLevel) 
+			changeBkgdTheme();
 		
-		
+
 	}
+	
 	public void pressAnyKey(Graphics g2d) {
 		g2d.drawString("Press any key to continue...", 100, 70);
 
 	}
-	public void displayGameMessage(Graphics g2d) {
+	public void drawGameMessage(Graphics g2d) {
 		if(quitGame) {
 			pressAnyKey(g2d);
 			g2d.drawImage(endGameImage,175,200,null);
@@ -658,43 +809,33 @@ class Tetris extends JPanel implements KeyListener, ActionListener {
 		else
 			g2d.drawImage(soundOffImage,475,525,35,35,null);
 		
-		
-		
 		g2d.drawImage(messageImage,100,0,null);
 	}
 	
-	
-	
-	public void displayGameStatistics(Graphics g2d) {
+	public void drawGameStatistics(Graphics g2d) {
 		g2d.setColor(Color.white);
 		
 		g2d.setFont(new Font("Courier", Font.BOLD,20));
-
+		
 		g2d.drawImage(logoTextNext, 475, 90, null);
-		//g2d.drawString("NEXT", 475, 90);
 		
 		g2d.drawImage(logoTextLevel, 475, 300, null);
-		//g2d.drawString("LEVEL", 475, 300);
 		g2d.drawString(Integer.toString(gameLevel), 475, 350);
 		
 		
 		g2d.drawImage(logoTextLines, 475, 375, null);
-		//g2d.drawString("LINES", 475, 375);
 		g2d.drawString(Integer.toString(totalLines), 475, 425);
 		
 		g2d.drawImage(logoTextScore, 475, 450, null);
-		//g2d.drawString("SCORE", 475, 450);
 		g2d.drawString(Integer.toString(totalScore), 475, 500);
 		
-		
-
 	}
 	public void drawGameSprites(Graphics2D g2d) {
 		Draw draw = new Draw();
 		draw.showAllImage(isTimeAnimated());
+		draw.setCutOff(75);
 		
-
-		if(gameTheme == THEMES_TOTAL) {
+		if(blockTheme == BLOCK_THEMES_TOTAL) {
 			g2d.drawImage(backgroundImage[backgroundTheme],0,0,getWidth(),getHeight(),null);
 
 			//g2d.fillRect(425,75, 175,150);
@@ -704,6 +845,7 @@ class Tetris extends JPanel implements KeyListener, ActionListener {
 			
 			else
 				draw.setBackground(g2d, gameBoard, Color.BLACK);
+			
 			draw.display(g2d, gameBoard);
 			draw.display(g2d, gameBlock);
 			g2d.fillRoundRect(425,275, 175,300,30,30);
@@ -714,22 +856,21 @@ class Tetris extends JPanel implements KeyListener, ActionListener {
 		else {
 
 			g2d.drawImage(backgroundImage[backgroundTheme],0,0,getWidth(),getHeight(),null);
-			draw.display(g2d, nextBlock, blockImage[gameTheme]);
+			draw.display(g2d, nextBlock, blockImage[blockTheme]);
 			
 			if(turnOnGrid)
 				draw.displayCheckerImage(g2d, gameBoard);
 			
 			else
 				draw.setBackground(g2d, gameBoard,Color.BLACK);
-			
-			draw.display(g2d, gameBoard, blockImage[gameTheme]);
-			draw.display(g2d, gameBlock, blockImage[gameTheme]);
+			draw.display(g2d, gameBoard, blockImage[blockTheme]);
+			draw.display(g2d, gameBlock, blockImage[blockTheme]);
 			g2d.fillRoundRect(425,275, 175,300,30,30);
 
 		}
 		
-		displayGameStatistics(g2d);
-		displayGameMessage(g2d);
+		drawGameStatistics(g2d);
+		drawGameMessage(g2d);
 		
 		
 	}
@@ -755,74 +896,86 @@ class Tetris extends JPanel implements KeyListener, ActionListener {
 		nextBlock.setObject(nextGameBlock,BLOCK_WIDTH, BLOCK_HEIGHT,BLOCK_SIZE);
 		nextBlock.setPosition(NEXT_BLOCK_POS_X ,NEXT_BLOCK_POS_Y);
 	}
+
 	public void setBlocks() {
 		rotateBlock = 0;
 		blockLocateX = BLOCK_POS_X;
 		blockLocateY = BLOCK_POS_Y;
-		
+
 		blockType = nextBlockType;
 		setNextBlock();
-
 	}
+
 	@Override
 	public void keyPressed(KeyEvent e) {
-		
+
 		int tempRotateBlock = rotateBlock;
 		int tempBlockLocateX = blockLocateX;
 		int tempBlockLocateY = blockLocateY;
-		
+			
 		int keyPress = e.getKeyCode();
+		boolean bRotate = false;
 		
-		if(justStarted || quitGame) {
+		if(endGame) {
+			keyPress = 0;
+			quitGame = false;
+		}
+		
+		if (justStarted) {
 			keyPress = 0;
 			justStarted = false;
+
+		} else if (quitGame) {
+			keyPress = 0;
 			endGame = true;
-		
+			savePlayerScore();
+			System.out.println("save records !!!");
 		}
-		switch(keyPress) {
-		
+
+		switch (keyPress) {
+
 		case KeyEvent.VK_UP:
-			if(rotateBlock < ROTATE_AMOUNT)
-				rotateBlock ++;
+			if (rotateBlock < ROTATE_AMOUNT) 
+				rotateBlock++;
 			else
 				rotateBlock = 0;
+			bRotate = true;
 			break;
 			
 		case KeyEvent.VK_DOWN:
 			blockLocateY += BLOCK_SIZE;
 			break;
-			
-		case KeyEvent.VK_LEFT: 
+
+		case KeyEvent.VK_LEFT:
 			blockLocateX += -BLOCK_SIZE;
 			break;
-			
+
 		case KeyEvent.VK_RIGHT:
 			blockLocateX += BLOCK_SIZE;
 			break;
-			
+
 		case KeyEvent.VK_SPACE:
-			if(pauseGame) 
+			if (pauseGame)
 				break;
-			
-			while(gameBoard.inBound(gameBlock) && !gameBoard.hasObject(gameBlock)) {
+
+			while (gameBoard.inBound(gameBlock)
+					&& !gameBoard.hasObject(gameBlock)) {
 				tempBlockLocateY = blockLocateY;
 				blockLocateY += BLOCK_SIZE;
 				updateTetris();
 			}
-			
+
 			blockLocateY = tempBlockLocateY;
 			updateTetris();
 			addObjectToBackground();
+			playSound(0);
 			
-			if(soundOn)
-				playSound(0);
 			break;
 		case KeyEvent.VK_S:
 			soundOn = !soundOn;
 			break;
 		case KeyEvent.VK_T:
 			changeGameTheme();
-			
 			break;
 		case KeyEvent.VK_G:
 			turnOnGrid = !turnOnGrid;
@@ -833,83 +986,105 @@ class Tetris extends JPanel implements KeyListener, ActionListener {
 		case KeyEvent.VK_B:
 			changeBkgdTheme();
 			break;
+		case KeyEvent.VK_L:
+			gameLevel++;
+			overrideCommand = true;
+			break;
 		case KeyEvent.VK_ESCAPE:
 		case KeyEvent.VK_P:
 			escKeyPress = !escKeyPress;
-			pauseGame = escKeyPress;//!pauseGame;
+			pauseGame = escKeyPress;// !pauseGame;
 			break;
 		}
-		
-		if(pauseGame ) {
+
+		if (pauseGame) {
 			rotateBlock = tempRotateBlock;
 			blockLocateX = tempBlockLocateX;
 			blockLocateY = tempBlockLocateY;
 		}
-		
+
 		else {
 			updateTetris();
-			if(gameBoard.inBound(gameBlock) && !gameBoard.hasObject(gameBlock)) 
+			if (gameBoard.inBound(gameBlock) && !gameBoard.hasObject(gameBlock)) {
+				if(bRotate)
+					playSound(2);
+
 				this.repaint();
-			
+			}
 			else {
 				rotateBlock = tempRotateBlock;
 				blockLocateX = tempBlockLocateX;
 				blockLocateY = tempBlockLocateY;
-				updateTetris();	
+				updateTetris();
 			}
 		}
 
-
 	}
-	
+
 	@Override
-	public void keyTyped(KeyEvent e) {}
-	
+	public void keyTyped(KeyEvent e) {
+	}
+
 	@Override
-	public void keyReleased(KeyEvent e) {}
+	public void keyReleased(KeyEvent e) {
+	}
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-		if (pauseGame || animateTime > 0 || justStarted) 
-				repaint();
-		else if (!quitGame) 
+		if (pauseGame || animateTime > 0 || justStarted)
+			repaint();
+		else if (!quitGame)
 			dropBlocks();
 		
+
 	}
+
 	public void dropBlocks() {
 		int tempBlockLocateY = blockLocateY;
-		
+
 		blockLocateY += BLOCK_SIZE;
 		updateTetris();
-		
-		if(gameBoard.inBound(gameBlock) && !gameBoard.hasObject(gameBlock)) 
+
+		if (gameBoard.inBound(gameBlock) && !gameBoard.hasObject(gameBlock))
 			repaint();
-		
+
 		else {
 			blockLocateY = tempBlockLocateY;
 			updateTetris();
-			
-			if(gameBoard.hasObject(gameBlock)) 
+
+			if (gameBoard.hasObject(gameBlock)) {
 				quitGame = true;
-			else 
+				playSound(3);
+
+			}
+			else
 				addObjectToBackground();
 			repaint();
 		}
 	}
+	
+	public void changeGameTheme() {
+		changeBkgdTheme();
+		changeBlockTheme();
+	}
+
 	public void changeBkgdTheme() {
-		if(backgroundTheme >= backgroundImage.length - 1)
+		if (backgroundTheme >= backgroundImage.length - 1)
 			backgroundTheme = 0;
 		else
-			backgroundTheme ++;
+			backgroundTheme++;
 	}
-	public void changeGameTheme() {
 
-		if(gameTheme >= THEMES_TOTAL)
-			gameTheme = 0;
+	public void changeBlockTheme() {
+
+		if (blockTheme >= BLOCK_THEMES_TOTAL)
+			blockTheme = 0;
 		else
-			gameTheme ++;
+			blockTheme++;
 	}
 	public void setGameSpeed() {
+
 		switch(gameLevel) {
 		case 2:
 			gameSpeed = 500;
@@ -937,27 +1112,93 @@ class Tetris extends JPanel implements KeyListener, ActionListener {
 			break;
 		case 10:
 			gameSpeed = 100;
-			break;	
+			break;
+
 		}
-		if(animateTime > 0)
+		
+			
+		if (animateTime > 0)
 			gameTimer.setDelay(50);
+
 		else
-		gameTimer.setDelay(gameSpeed);
+			gameTimer.setDelay(gameSpeed);
 	}
+
+	public static java.sql.Date getDate() {
+		long currentDate = System.currentTimeMillis();
+		return new java.sql.Date(currentDate);
+	}
+	public void savePlayerScore() {
+		if (totalScore > 0)
+			try {
+				recordScore();
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+	}
+	public void recordScore() throws SQLException, ClassNotFoundException {
+		String playerName = "unknown";
+		String queryStatement = "insert into records (name, score, level, date)"
+				+ "value (?,?,?,?)";
+
+		//Class.forName("com.mysql.jdbc.Driver");
+		Connection connect = DriverManager.getConnection(
+				"jdbc:mysql://localhost/MikeGames", "root", "pumkin");
+		PreparedStatement statement = connect.prepareStatement(queryStatement);
+
+		statement.setString(1, playerName);
+		statement.setInt(2, totalScore);
+		statement.setInt(3, gameLevel);
+		statement.setDate(4, getDate());
+		statement.execute();
+
+		if (connect != null)
+			connect.close();
+		if (statement != null)
+			statement.close();
+
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+
+		boolean bHar = e.getX() > 475 && e.getX() < 499;
+		boolean bVer = e.getY() > 525 && e.getY() < 560;
+
+		if (bHar && bVer)
+			soundOn = !soundOn;
+	}
+	
+	@Override
+	public void mousePressed(MouseEvent e) {
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+	}
+	
+
 }
 
 class Draw {
-	//private boolean bGridOn;
+	
 	private boolean bImage;
-	Draw() {
-	//	bGridOn = false;
-		
+	private int cutOff;
+	
+	Draw() {}
+	public void setCutOff(int harizontal_start) {
+		cutOff = harizontal_start;
 	}
-	/*
-	public void displayGrid(boolean bGridOn) {
-		this.bGridOn = bGridOn;
-	}
-	*/
 	public void showAllImage(boolean bImage) {
 		this.bImage = bImage;
 	}
@@ -1020,14 +1261,11 @@ class Draw {
 		for(int y = 0; y < verticalBlockAmount; y++ ) {
 			for(int x = 0; x < horizontalBlockAmount; x++) {
 				blockIndex = gameObject.getBlockIndex(index);
-				//if(bGridOn)
-					//g.drawRect(locate_X,locate_Y, blockSize, blockSize);
 				
-				if(bImage)
-					if(blockIndex < 0)
+				if(bImage && blockIndex < 0)
 						blockIndex *= -1;
 				if(blockIndex > 0)
-					
+					if(locate_Y >= cutOff) ///
 					displayImage(g,locate_X,locate_Y,blockSize,blockIndex);
 				
 				locate_X += blockSize;
@@ -1058,6 +1296,7 @@ class Draw {
 						blockIndex *= -1;
 				
 				if(blockIndex > 0)
+					if(locate_Y >= cutOff) //
 					g.drawImage(image[blockIndex - 1], locate_X, locate_Y, blockSize, blockSize, null);
 
 				
@@ -1084,25 +1323,25 @@ class Draw {
 		
 		switch(index) {
 		case 1:
-			g.setColor(new Color(31,143,225));//Color.CYAN);
+			g.setColor(new Color(31,143,225));
 			break;
 		case 2:
-			g.setColor(new Color(252,191,16));//Color.YELLOW);
+			g.setColor(new Color(252,191,16));
 			break;	
 		case 3:
-			g.setColor(new Color(48,47,193));//Color.BLUE);
+			g.setColor(new Color(48,47,193));;
 			break;
 		case 4:
-			g.setColor(new Color(247,105,31));//Color.ORANGE);
+			g.setColor(new Color(247,105,31));
 			break;
 		case 5:
-			g.setColor(new Color(144,49,147));//Color.MAGENTA);
+			g.setColor(new Color(144,49,147));
 			break;
 		case 6:
-			g.setColor(new Color(42,166,59));//Color.GREEN);
+			g.setColor(new Color(42,166,59));
 			break;	
 		case 7:
-			g.setColor(new Color(230,0,28));//Color.RED);
+			g.setColor(new Color(230,0,28));
 			break;
 		}
 		
@@ -1111,9 +1350,6 @@ class Draw {
 		g.drawRoundRect(locate_X, locate_Y, size, size,10,10);
 		
 	}
-	
-	
-	
 	
 }
  class  GameBlocks {
@@ -1338,6 +1574,8 @@ class GameObject {
 	public GameObject(int [] blockIndex,int horizontalBlockAmount, int verticalBlockAmount,int size) {
 		this.setObject(blockIndex,horizontalBlockAmount,verticalBlockAmount,size);
 	}
+	
+	
 	public void setObject(int [] blockIndex,int horizontalBlockAmount, int verticalBlockAmount,int size) {
 		this.horizontalBlockAmount = horizontalBlockAmount;
 		this.verticalBlockAmount = verticalBlockAmount;
@@ -1546,9 +1784,6 @@ class GameObject {
 	public String toString() {
 		return blockPosition.toString();
 	}
-	
-	
-
 	
 }
 /*

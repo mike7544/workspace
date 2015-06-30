@@ -1,0 +1,23 @@
+<%@ page import="java.sql.*" %>
+<%
+	String userID = request.getParameter("user_name");
+	String password = request.getParameter("password");
+	
+	Class.forName("com.mysql.jdbc.Driver");
+	Connection connect = DriverManager.getConnection("");
+	
+	Statement statement = connect.createStatement();
+	
+	ResultSet result;
+	result = statement.executeQuery("SELECT * FROM members where username = '" +
+		userID + "' and password = '" + password + "'");
+	
+	if(result.next()) {
+		session.setAttribute("userID",userID);
+		response.sendRedirect("success.jsp");
+	}
+	else {
+		out.println("Invalid password <a href='index.jsp'>try again</a>");
+	}
+
+%>

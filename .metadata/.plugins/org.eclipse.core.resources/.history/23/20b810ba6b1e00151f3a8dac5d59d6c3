@@ -1,0 +1,13 @@
+
+<%
+	if ((session.getAttribute("userName") == null)
+			|| (session.getAttribute("userName") == "")) {
+%>
+<p>You are not logged in</p>
+<br />
+<a href="login.jsp">Please Login</a>
+<% 
+	}else {
+	response.sendRedirect("index.jsp");
+}
+	  %>

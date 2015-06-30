@@ -1,0 +1,72 @@
+body {
+	background-color: #b8b8b8;
+	font-size: 20px;
+	color:#fff;
+	margin: auto;
+	width: 50%;
+	clear: both;
+	
+}
+
+form {
+	width: 500px;
+	height: 320px;
+	background-color: rgb(48,87,145); 
+	border-radius: 10px;
+	box-shadow: 0 0 30px #358077;
+	margin-top: 50px;
+	margin-left: 180px;
+	padding-top: 1px;
+	text-align: center;
+	
+}
+
+label {
+	text-align: right;
+	width: 100px;
+	margin-top: 15px ;
+	float: left;
+	margin-left:60px;
+}
+
+#first_name, #email, #password{
+	width: 220px;
+	height: 28px;
+	font-size: 14px;
+	border-radius: 6px;
+	
+	background-color: rgb(36,54,80);
+	border-color: black;
+	color:#fff;
+	
+	margin-top: 10px ;
+	margin-right: 100px;
+	
+}
+
+.login_button{
+	margin-top: 30px;
+	margin-left: 60px;
+	width: 100px;
+	
+	height: 38px;
+	border-radius: 6px;
+	font-size: 18px;
+	background-color: rgb(173,202,241);
+}
+.reset_button {
+	margin-top: 30px;
+	margin-left: 20px;
+	width: 100px;
+	
+	height: 38px;
+	border-radius: 6px;
+	font-size: 18px;
+	background-color: rgb(231,133,144);
+}
+
+.text {
+	margin-left: 320px;
+	float: left;
+	color: black;
+}

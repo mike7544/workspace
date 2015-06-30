@@ -1,0 +1,17 @@
+1434500496165	Delete element
+1434500540115	Delete element
+1434500574756	Delete element
+1434503892488	Rename resource 'jquery-ui-1.11.4.custom'
+1434503957343	Move 'jquery.js' to 'external'
+1434504017140	Rename resource 'jquery-ui'
+1434504026184	Move 'jquery.js' to 'js'
+1434504118508	Delete element
+1434588007033	Rename resource 'index.jsp'
+1434588022130	Rename resource 'login.jsp'
+1434588030855	Rename resource 'signup.jsp'
+1434588043798	Rename resource 'loginForm.html'
+1434588074406	Move 4 resources to 'old_jsp'
+1434588233397	Delete element
+1434588721911	Move 'logout.jsp' to 'WEB-INF'
+1434588730944	Move 'logout.jsp' to 'WebContent'
+1434591573485	Move 'old_jsp' to 'WebContent'

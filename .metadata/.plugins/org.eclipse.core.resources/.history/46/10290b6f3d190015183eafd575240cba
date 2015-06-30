@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>My Tetris Site</title>
+
+</head>
+
+<body>
+
+
+	<table>
+		<tr>
+			<td><font face="arial" size="4" color='ffffff'> Home | <a
+					href="about.html"> About </a> | <a href="troubleshoot.html">Troubleshoot</a>
+					| <a href="login.jsp">Login</a> | <a href="signup.jsp">Sing
+						Up</a>
+			</font></td>
+		</tr>
+	</table>
+
+
+	<h1>Main site</h1>
+</body>
+</html>

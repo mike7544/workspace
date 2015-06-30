@@ -1,0 +1,25 @@
+<%@ page import="java.sql.*" %>
+<%
+	String userName = request.getParameter("user_name");
+	String password = request.getParameter("password");
+	String firstName = request.getParameter("first_name");
+	String lastName = request.getParameter("last_name");
+	String email = request.getParameter("email");
+	
+	Class.forName("com.mysql.jdbc.Driver");
+	Connection connect = DriverManager.getConnection("");
+	
+	Statement statement = connect.createStatement();
+	int result = statement.executeUpdate(
+		"INSERT INTO members(first_name,last_name,email,user_name,password,date) values('" +
+		firstName + "','" +
+		lastName  + "','" +
+		email     + "','" +
+		userName + "','" +
+		password  + "', CURDATE())");
+	
+	if(result > 0) 
+		response.sendRedirect("welcome.jsp");
+	else
+		response.sendRedirect("index.jsp");
+%>
