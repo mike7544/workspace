@@ -27,9 +27,9 @@
 	
 	<div class="maincontent">
 		<div class="content">
-			<article class="topcontent">
+			<div class="topcontent">
 				<header>
-					<h2 class="title">GAME PLAYER</p></h2>
+					<h2 class="title">GAME PLAYER</h2>
 				</header>
 
 	<%			
@@ -38,22 +38,24 @@
  		out.println("Welcome " + session.getAttribute("userName"));
  	}
 	 %> 	
+		</div>
 		
-					
-
-			<!--
-				<applet code="games/TetrisApplet.class" archive="Tetris.jar" width="800" height="600">
-				</applet>
-				-->
-			</article>
-
+	<div>
+	  
+	<object id ='applet' type='application/x-java-applet'  height='600' width='800'>
+		
+  		<param name='archive' value='Tetris.jar'>
+		<param name='code' value='games/TetrisApplet.class' />
+  		<p>Applet failed to run.  No Java plug-in was found.</p>
+	</object>	
+	</div>
 		</div>
 	</div>
 	
 
 	
 	<footer class="mainfooter">
-		<p>copyright &copy: <a href="="# title="mikeGAMES">mikeGAMES.com</a></p>
+		<p>copyright &copy;: <a href="index.jsp" title="mikeGAMES">mikeGAMES.com</a></p>
 	</footer>
 </body>
 </html>

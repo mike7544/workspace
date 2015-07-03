@@ -1,0 +1,142 @@
+
+body {
+	background-image: url('img/bg.png');
+	color:#fff;
+	font-size: 87.5%;
+	font-family: Arial,'Lucide Sans Unicode';
+	line-height: 1.5;
+	text-align: left;
+	
+	
+}
+
+a {
+	text-decoration: none;
+}
+
+a:link, a:visited {
+	color:#0bb7b5;
+}
+
+a:hover, a:active {
+	background-color:#0bb7b5;
+	color: #fff;
+}
+.title {
+	color:#0bb7b5;
+}
+.body {
+	width:90%;
+	font-size: 95%;
+	margin-left: 20%;
+	clear:both;
+}
+
+.mainheader img {
+	width: 800px;
+	margin: 2% 0;
+	
+}
+
+.mainheader nav {
+	background-color:#222A30;
+	height: 40px;
+	width: 800px;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+
+}
+
+.mainheader nav ul {
+	list-style: none;
+	margin: 0 auto;
+}
+
+.mainheader nav ul li {
+	float: left;
+	display: inline;
+}
+
+.mainheader nav a:link, .mainheader nav a:visited {
+	color: #fff;
+	display: inline-block;
+	padding: 10px 25px;
+	height: 20px;	
+}
+
+.mainheader nav a:hover, .mainheader nav a:active, 
+.mainheader nav .active a:link, .mainheader nav .active a:visited {
+	background-color: #0bb7b5;
+	text-shadow: none;
+
+}
+
+.mainheader nav ul li a {
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	
+}
+
+.maincontent {
+	line-height: 25px;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	
+}
+
+.content {
+	width: 800px;
+	float: left;
+	
+}
+
+.topcontent {
+	
+	background-color: #222A30;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	
+	padding-left: 5%;
+	padding-top: 1px;
+	padding-bottom: 1em;
+	margin-top: 2%;
+}
+
+.bottomcontent, #applet {
+	
+	background-color:#222A30;
+	border-radius: 5px;
+	padding-top: 2%;
+    padding-bottom: 2%;
+	margin-top: 20px;
+	
+	-moz-border-bottom:200px;
+
+}
+
+
+
+.mainfooter {
+	width: 800px;
+	height: 40px;
+	float: left;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	background-color: #222A30;
+	margin: 2% 0;
+	
+}
+.mainfooter p {
+	width: 92%;
+	margin: 10px auto;
+	color:#fff;
+}
+
+
+
+

@@ -1,8 +1,0 @@
-
-<%
-	if ((session.getAttribute("userID")== null) || 
-	    (session.getAttribute("userID") == "")) {
-	}
-	You are not logged in<br />
-	
-%>

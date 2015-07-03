@@ -1,6 +1,0 @@
-
-<%
-	session.setAttribute("user_id",null);
-	sessioin.invalidate();
-	response.sendRedirect("index.jsp");
-%>

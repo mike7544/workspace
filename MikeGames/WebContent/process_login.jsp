@@ -4,7 +4,8 @@
 	String password = request.getParameter("password");
 
 	Class.forName("com.mysql.jdbc.Driver");
-	Connection connect = DriverManager.getConnection("jdbc:mysql://localhost/MikeGames","root","pumkin");
+	//Connection connect = DriverManager.getConnection("jdbc:mysql://localhost/MikeGames","root","pumkin");
+	Connection connect = DriverManager.getConnection("jdbc:mysql://127.10.12.130:3306/MikeGames","adminDAmUjhP","Z4A9yzKQr_X5");
 
 	Statement statement = connect.createStatement();
 
@@ -17,7 +18,6 @@
 		session.setAttribute("userName", userName);
 		response.sendRedirect("index.jsp");
 	} else {
-		out.println("Invalid password");
-		//out.println("Invalid password <a href='login.jsp'>try again</a>");
+		response.sendRedirect("invalid.html");
 	}
 %>

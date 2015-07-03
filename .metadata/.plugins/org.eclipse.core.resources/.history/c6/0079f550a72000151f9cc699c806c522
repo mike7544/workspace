@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Troubleshoot</title>
+	<meta charset="utf-8" />
+	
+	<link rel="stylesheet" href="stylesheet.css" type="text/css" />
+	<meta name="viewpot" content="width=device-width, initial-scale=1.0">
+	<style>
+		.middlecontent {
+			color:black;
+			font-size: 25px;
+		}
+	</style>
+</head>
+
+<body class="body">
+	<header class="mainheader">
+		<img src="img/logo.gif">
+		
+		<nav><ul>
+			<li ><a href="index.jsp">Home</a></li>
+			<li><a href="screenshots.html">Screenshots</a></li>
+			<li class="active"><a href="troubleshoot.html">Troubleshoot</a></li>
+			<li><a href="about.html">About</a></li>
+			<li><a href="login.html">Login</a></li>
+		</ul></nav>
+	</header>
+	<div class="maincontent">
+		<div class="content">
+			<div class="topcontent">
+				<header>
+					<h2 class="title">TROUBLESHOOT</h2>
+				</header>	
+			</div>
+			
+			<div class="middlecontent">
+				<p>If your browser display this</p>
+				<img src="img_trouble/app_error.jpg" width="800">
+				
+				<p>Or this</p>
+				<img src="img_trouble/no_app.jpg" width="800">
+
+
+				<p>First go to your start menu and<br />
+				open your control panel and then click on Programs<br />
+				*do not click on Uninstall a program*
+				</p>
+				
+				<img src="img_trouble/control_panel.jpg" alt="control panel" width="800">
+				
+				<p>Click the java icon</p>
+				<img src="img_trouble/control_panel_prog.jpg" width="800">
+				
+				<p>Click on the Security Tab</p>
+				<img src="img_trouble/java_control.jpg" width="800">
+				
+				<p>Push the Edit Site List button</p>
+				<img src="img_trouble/security.jpg" width="800">
+				
+				<p>Push the add button</p>
+				<img src="img_trouble/security_except.jpg" width="800">
+				
+				<p>Copy the url<br />
+				http://javaapplet-mikegames.rhcloud.com/javaapplet/index.jsp
+				</p>
+				
+				<img src="img_trouble/highlight_url.jpg" width="800">
+				
+				<p>Paste it in the Exception Site List location</p>
+				<img src="img_trouble/security_add.jpg" width="800">	
+							
+				<p>Click OK</p>
+				<img src="img_trouble/security_ok.jpg" width="800">
+				
+				<p>And Continue</p>
+				<img src="img_trouble/security_warning.jpg" width="800">
+	
+				<p>Close and restart the web browser<br/>
+					When Security Warning pops up click Run 
+				</p>
+								
+				<img src="img_trouble/run_app.jpg" width="800">
+
+				<p>You should see something like this</p>
+				<img src="img_trouble/success.jpg" width="800">
+	
+			</div>
+		</div>
+	</div>
+	
+	<footer class="mainfooter">
+		<p>copyright &copy;:<a href="index.jsp"title="mikeGAMES">mikeGAMES</a></p>
+	</footer>
+	</body>
+</html>

@@ -324,10 +324,14 @@ class GameScore extends JPanel {
 		String queryStatement = "select name, score, level, date "
 				+ "from records order by score desc";
 		Class.forName("com.mysql.jdbc.Driver");
-		Connection connection = DriverManager.getConnection(
+	
+		Connection connect = DriverManager.getConnection(
 				"jdbc:mysql://localhost/MikeGames", "root", "pumkin");
-
-		PreparedStatement statement = connection
+/*		
+		Connection connect = DriverManager.getConnection(
+				"jdbc:mysql://127.10.12.130:3306/MikeGames","adminDAmUjhP","Z4A9yzKQr_X5");
+*/	
+		PreparedStatement statement = connect
 				.prepareStatement(queryStatement);
 		ResultSet result = statement.executeQuery();
 
@@ -345,8 +349,8 @@ class GameScore extends JPanel {
 			index++;
 		}
 
-		if (connection != null)
-			connection.close();
+		if (connect != null)
+			connect.close();
 		if (statement != null)
 			statement.close();
 		if (result != null)
@@ -715,8 +719,8 @@ class Tetris extends JPanel implements KeyListener, ActionListener,
 			 Clip clip = AudioSystem.getClip();
 			
 			AudioInputStream inputStream = AudioSystem.getAudioInputStream(
-					Tetris.class.getResourceAsStream("/sounds/" + filename));
-			
+					//Tetris.class.getResourceAsStream("/sounds/" + filename));
+			Tetris.class.getResource("/sounds/" + filename));
 			clip.open(inputStream);
 			clip.start();
 			
@@ -1143,9 +1147,14 @@ class Tetris extends JPanel implements KeyListener, ActionListener,
 		String queryStatement = "insert into records (name, score, level, date)"
 				+ "value (?,?,?,?)";
 
-		//Class.forName("com.mysql.jdbc.Driver");
+		Class.forName("com.mysql.jdbc.Driver");
+		
 		Connection connect = DriverManager.getConnection(
 				"jdbc:mysql://localhost/MikeGames", "root", "pumkin");
+		/*
+		Connection connect = DriverManager.getConnection(
+				"jdbc:mysql://127.10.12.130:3306/MikeGames","adminDAmUjhP","Z4A9yzKQr_X5");
+		*/
 		PreparedStatement statement = connect.prepareStatement(queryStatement);
 
 		statement.setString(1, playerName);
