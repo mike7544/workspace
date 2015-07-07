@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+	<title>Registration</title>
+	<meta charset="utf-8" />
+		
+	<link rel="stylesheet" href="stylesheet.css" type="text/css" />
+	<link rel="stylesheet" href="register_style.css" type="text/css" />
+	<meta name="viewpot" content="width=device-width, initial-scale=1.0">
+
+
+</head>
+
+
+<body class="body">
+
+<header class="mainheader">
+		<img src="img/logo.gif">
+		
+		<nav><ul>
+			<li ><a href="index.jsp">Home</a></li>
+			<li><a href="screenshots.html">Screenshots</a></li>
+			<li><a href="troubleshoot.html">Troubleshoot</a></li>
+			<li><a href="about.html">About</a></li>
+			<li class="active" ><a href="#">Login</a></li>
+		</ul></nav>
+	</header>
+	
+	<form method="post" action="process_reg.jsp">
+	
+		<h2>Register form</h2>
+		<div>
+			<label for="name">User Name:</label>
+			<input id="first_name" type="text" name="user_name" value="" required/>
+		</div>
+		<div>
+			<label for="email">Your Email:</label>
+			<input id="email" type="text"name="email" value="" />	
+		</div>
+		<div>
+			<label for="password">Password:</label>
+			<input id="password" type="password" name="password" value="" required/>
+		</div>
+		
+		<input class = "submit_button" type="submit" value="Submit">
+		<input class = "reset_button" type="reset" value="Reset">
+		
+	</form>
+	<br />
+	<p class="text">Already registered! <a href="login.html">Login Here</a><br /></p>
+	
+	
+	<footer class="mainfooter">
+		<p>copyright &copy;: <a href="index.jsp" title="mikeGAMES">mikeGAMES</a></p>
+	</footer>
+
+
+</body>
+
+</html>

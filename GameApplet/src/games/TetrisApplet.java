@@ -45,12 +45,12 @@ public class TetrisApplet extends JApplet implements  ActionListener {
 	static final int APP_WIDTH = 800;
 	static final int APP_HEIGHT = 600;
 	static final int APP_GAME = 1;
-	static final int APP_SCORE = 2;
+	//static final int APP_SCORE = 2;
 	static final int APP_MENU = 3;
 	private int choice;
 	
 	private StartMenu startMenu = null;
-	private GameScore gameScore = null;
+//	private GameScore gameScore = null;
 	private Tetris game = null;
 	
 	
@@ -66,12 +66,12 @@ public class TetrisApplet extends JApplet implements  ActionListener {
 		game.setVisible(false);
 		add(game);
 		this.addKeyListener(game);
-		
+		/*
 		gameScore = new GameScore();
 		gameScore.setSize(APP_WIDTH,APP_HEIGHT);
 		gameScore.setVisible(false);
 		add(gameScore);
-		
+		*/
 		
 		startMenu = new StartMenu();
 		startMenu.setVisible(false);
@@ -92,10 +92,12 @@ public class TetrisApplet extends JApplet implements  ActionListener {
 			game.repaint();
 			game.setVisible(true);
 			break;
+			/*
 		case APP_SCORE:
 			gameScore.repaint();
 			gameScore.setVisible(true);
 			break;
+			*/
 		case APP_MENU:
 			startMenu.repaint();
 			startMenu.setVisible(true);
@@ -113,22 +115,23 @@ public class TetrisApplet extends JApplet implements  ActionListener {
 		choice = startMenu.getChoice();
 		startMenu.resetChoice();
 		
-		if (choice == 1 || choice == 2) {
+		//if (choice == APP_GAME || choice == APP_SCORE) {
+		if (choice == APP_GAME) {
 			startMenu.setVisible(false);
 			game.resetGame();
 		}
 		
 		if (game.quit()) {
 			game.setVisible(false);
-			choice 
-			= 3;
+			choice = APP_MENU;
 		}
+		/*
 		if (gameScore.exit()) {
 			gameScore.setVisible(false);
 			gameScore.resetExit();
-			choice = 3;
+			choice = APP_MENU;
 		}
-		
+		*/
 		this.start();
 	}
 	
@@ -139,10 +142,10 @@ public class TetrisApplet extends JApplet implements  ActionListener {
 class StartMenu extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private static final int BTN_START = 1;
-	private static final int BTN_SCORE = 2;
+	//private static final int BTN_SCORE = 2;
 
 	private JButton btnStart;
-	private JButton btnScore;
+	//private JButton btnScore;
 	private BufferedImage backgroundImage;
 	private MyImage image;
 	private int choice;
@@ -174,7 +177,7 @@ class StartMenu extends JPanel {
 			}
 		});
 		add(btnStart);
-
+/*
 		btnScore = new JButton(image.getIcon("btn_score.png"));
 		btnScore.setOpaque(false);
 		btnScore.setContentAreaFilled(false);
@@ -196,7 +199,7 @@ class StartMenu extends JPanel {
 		});
 
 		add(btnScore);
-
+*/
 		choice = 0;
 
 	}
@@ -1133,6 +1136,7 @@ class Tetris extends JPanel implements KeyListener, ActionListener,
 		return new java.sql.Date(currentDate);
 	}
 	public void savePlayerScore() {
+		/*
 		if (totalScore > 0)
 			try {
 				recordScore();
@@ -1141,8 +1145,10 @@ class Tetris extends JPanel implements KeyListener, ActionListener,
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
+			*/
 	}
 	public void recordScore() throws SQLException, ClassNotFoundException {
+		/*
 		String playerName = "unknown";
 		String queryStatement = "insert into records (name, score, level, date)"
 				+ "value (?,?,?,?)";
@@ -1151,10 +1157,10 @@ class Tetris extends JPanel implements KeyListener, ActionListener,
 		
 		Connection connect = DriverManager.getConnection(
 				"jdbc:mysql://localhost/MikeGames", "root", "pumkin");
-		/*
-		Connection connect = DriverManager.getConnection(
-				"jdbc:mysql://127.10.12.130:3306/MikeGames","adminDAmUjhP","Z4A9yzKQr_X5");
-		*/
+		
+		//Connection connect = DriverManager.getConnection(
+		//		"jdbc:mysql://127.10.12.130:3306/MikeGames","adminDAmUjhP","Z4A9yzKQr_X5");
+		
 		PreparedStatement statement = connect.prepareStatement(queryStatement);
 
 		statement.setString(1, playerName);
@@ -1167,7 +1173,7 @@ class Tetris extends JPanel implements KeyListener, ActionListener,
 			connect.close();
 		if (statement != null)
 			statement.close();
-
+*/
 	}
 
 	@Override

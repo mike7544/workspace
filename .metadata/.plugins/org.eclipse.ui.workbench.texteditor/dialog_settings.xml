@@ -2,12 +2,13 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="public" key="selection"/>
+		<item value="" key="selection"/>
 		<item value="true" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="true" key="wholeword"/>
 		<list key="findhistory">
+			<item value="saveGame"/>
 			<item value="private"/>
 			<item value="getImage"/>
 			<item value="getIcon"/>
@@ -15,7 +16,6 @@
 			<item value="quitGame"/>
 			<item value="playSound"/>
 			<item value="pressAnyKey"/>
-			<item value="savePlayerScore"/>
 		</list>
 		<list key="replacehistory">
 			<item value="public"/>

@@ -20,10 +20,12 @@ a:link, a:visited {
 
 a:hover, a:active {
 	background-color:#0bb7b5;
+	
 	color: #fff;
 }
 .title {
 	color:#0bb7b5;
+
 }
 .body {
 	width:90%;
@@ -68,6 +70,7 @@ a:hover, a:active {
 .mainheader nav a:hover, .mainheader nav a:active, 
 .mainheader nav .active a:link, .mainheader nav .active a:visited {
 	background-color: #0bb7b5;
+	background-color:#991031;
 	text-shadow: none;
 
 }
@@ -86,7 +89,12 @@ a:hover, a:active {
 	-webkit-border-radius: 5px;
 	
 }
-
+.article {
+	color:#a8edbe;
+	font-size: larger;
+	padding-left: 30px;
+	padding-right: 30px;
+}
 .middlecontent {
 
 	color:black;
@@ -139,7 +147,7 @@ a:hover, a:active {
 }
 .mainfooter p {
 	width: 92%;
-	margin: 10px auto;
+	margin: 10px ;
 	color:#fff;
 }
 

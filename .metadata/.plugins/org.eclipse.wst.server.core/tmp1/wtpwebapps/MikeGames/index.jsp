@@ -46,7 +46,11 @@
 		
   		<param name='archive' value='Tetris.jar'>
 		<param name='code' value='games/TetrisApplet.class' />
-  		<p>Applet failed to run.  No Java plug-in was found.</p>
+	
+  			<p class="article">
+  				Applet failed to run.  No Java plug-in was found.
+  			</p>
+  		
 	</object>	
 	</div>
 		</div>

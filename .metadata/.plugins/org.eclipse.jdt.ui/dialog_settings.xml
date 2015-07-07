@@ -101,6 +101,7 @@
 		<item value="false" key="JarPackageWizardPage.EXPORT_OUTPUT_FOLDER"/>
 		<list key="JarPackageWizardPage.DESTINATION_NAMES_ID">
 			<item value="/Users/mike7544/Desktop/Tetris.jar"/>
+			<item value="/Users/mike7544/Desktop/JavaApplet.jar"/>
 		</list>
 	</section>
 	<section name="JavaElementSearchActions">
