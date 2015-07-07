@@ -20,12 +20,10 @@ a:link, a:visited {
 
 a:hover, a:active {
 	background-color:#0bb7b5;
-	
 	color: #fff;
 }
 .title {
 	color:#0bb7b5;
-
 }
 .body {
 	width:90%;
@@ -70,7 +68,6 @@ a:hover, a:active {
 .mainheader nav a:hover, .mainheader nav a:active, 
 .mainheader nav .active a:link, .mainheader nav .active a:visited {
 	background-color: #0bb7b5;
-	background-color:#991031;
 	text-shadow: none;
 
 }
@@ -90,7 +87,7 @@ a:hover, a:active {
 	
 }
 .article {
-	color:#a8edbe;
+	color: #0bb7b5;
 	font-size: larger;
 	padding-left: 30px;
 	padding-right: 30px;

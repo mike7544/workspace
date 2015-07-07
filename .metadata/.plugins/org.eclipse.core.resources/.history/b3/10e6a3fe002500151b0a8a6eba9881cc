@@ -99,7 +99,7 @@ a:hover, a:active {
 
 	color:black;
 	font-size: 25px;
-	text-align:left;
+	text-align:center;
 }
 .content {
 	width: 800px;
