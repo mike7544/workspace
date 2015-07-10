@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Troubleshoot</title>
+	<meta charset="utf-8" />
+	
+	<link rel="stylesheet" href="stylesheet.css" type="text/css" />
+	<meta name="viewpot" content="width=device-width, initial-scale=1.0">
+	
+</head>
+
+<body class="body">
+	<header class="mainheader">
+		<img src="img/logo.gif">
+		
+		<nav><ul>
+			<li ><a href="index.jsp">Home</a></li>
+			<li><a href="screenshots.html">Screenshots</a></li>
+			<li class="active"><a href="troubleshoot.html">Troubleshoot</a></li>
+			<li><a href="about.html">About</a></li>
+			<li><a href="login.html">Login</a></li>
+		</ul></nav>
+	</header>
+	<div class="maincontent">
+		<div class="content">
+			<div class="topcontent">
+				<header>
+					<h2 class="title">TROUBLESHOOT</h2>
+				</header>	
+			</div>
+			<div class="middlecontent">
+			<p> By default applets are turn off on most web browsers.<br /><br />
+				You have to enable it through your browser settings.<br /> <br />
+				First make sure java is installed on your system.<br /><br />
+				Second enable java plugin in most browsers by following this links:<br />
+				<a href="https://java.com/en/download/help/enable_browser.xml" target="_blank">
+				https://java.com/en/download/help/enable_browser.xml</a><br /><br />
+				Now if you are using *chrome * there is an extra step to take.<br /><br />
+	
+				Type this in your browser: chrome://flags/#enable-npapi <br />
+			</p>
+				
+			<img src="img/npapi_disable.jpg" width="800">
+			<p>
+			and enable NPAPI.<br /><br />
+			Then type this in your browser: chrome://plugins/
+			</p>
+			<img src="img/plugin_disable.jpg" width="800">
+			<p>and click Enable and check Always allow to run. Shutdown chrome.<br /><br />
+			Go to control panel and start the Java Control Panel.<br /><br />
+			Click on security tab and go down to Edit Site List button.<br /><br />
+			Click it and add this url http://javaapplet-mikegames.rhcloud.com/javaapplet/index.jsp to the list of site.<br /><br />
+			Start chrome.<br /><br />
+			</p>
+			</div>
+		</div>
+	</div>
+	
+	<footer class="mainfooter">
+		<p>copyright &copy;:<a href="index.jsp"title="mikeGAMES">mikeGAMES</a></p>
+	</footer>
+	</body>
+</html>
