@@ -326,22 +326,21 @@ class Tetris extends JPanel implements KeyListener, ActionListener,
 	
 	public Tetris() {
 		
-		gameBlock = new GameObject(); 				// create game blocks
-		gameBoard = new GameObject(); 				// create game board
-		nextBlock = new GameObject(); 				// create next block
+		gameBlock = new GameObject();					// create game blocks
+		gameBoard = new GameObject();					// create game board
+		nextBlock = new GameObject();					// create next block
+		
+	
+		blockImage = new BufferedImage[BLOCK_THEMES_TOTAL][7];	// set space for block images
+		backgroundImage = new BufferedImage[BKGD_TOTAL];		// set space for background image
+		soundOn = true;									// turn sound on
 
-		blockImage = new BufferedImage[BLOCK_THEMES_TOTAL][7]; 	// set space for
-																// block images
-		backgroundImage = new BufferedImage[BKGD_TOTAL];		// set space for
-																// background image
-		soundOn = true; 							// turn sound on
+		image = new MyImage();							// initiate class to load image
+		loadGameImage();								// load all image for tetris
+		setNextBlock();									// set the type of next brick
+		setGame();										// initiate more values
 
-		image = new MyImage(); 						// initiate class to load image
-		loadGameImage(); 							// load all image for tetris
-		setNextBlock();								// set the type of next brick
-		setGame();									// initiate more values
-
-		gameTimer = new Timer(gameSpeed, this);		// create timer for tetris
+		gameTimer = new Timer(gameSpeed, this);			// create timer for tetris
 		
 		//
 		// add mouse and key listener

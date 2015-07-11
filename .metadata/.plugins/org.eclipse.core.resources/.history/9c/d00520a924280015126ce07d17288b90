@@ -67,10 +67,11 @@ public class TetrisApplet extends JApplet implements  ActionListener {
 		
 	
 		setSize(APP_WIDTH,APP_HEIGHT);		// set main applet window size
-		appTimer = new Timer(100,this);		// timer for main program
+		appTimer = new Timer(100,this); 	// timer for main program
 		
+	
 		game = new Tetris();				// create tetris video game
-		game.setSize(APP_WIDTH,APP_HEIGHT);	// set tetris game window size
+		game.setSize(APP_WIDTH,APP_HEIGHT); // set tetris game window size
 		game.setVisible(false);
 		add(game);
 		this.addKeyListener(game);
@@ -84,6 +85,7 @@ public class TetrisApplet extends JApplet implements  ActionListener {
 		
 		// As soon as the program loads
 		// display the tetris video game first.
+		
 		choice = APP_GAME;					
 		
 		
@@ -108,17 +110,17 @@ public class TetrisApplet extends JApplet implements  ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-		choice = startMenu.getChoice();		// get choice from start menu
-		startMenu.resetChoice();			// reset start menu
+		choice = startMenu.getChoice();			// get choice from start menu
+		startMenu.resetChoice();				// reset start menu
 		
-		if (choice == APP_GAME) {			// make tetris game visible
-			startMenu.setVisible(false);	// and make start menu invisible
-			game.resetGame();				// reset all game variables
+		if (choice == APP_GAME) {				// make tetris game visible
+			startMenu.setVisible(false);		// and make start menu invisible
+			game.resetGame();					// reset all game variables
 		}
 		
-		if (game.quit()) {					// quit tetris game
+		if (game.quit()) {						// quit tetris game
 			game.setVisible(false);				
-			choice = APP_MENU;				// and go back to start menu
+			choice = APP_MENU;					// and go back to start menu
 		}
 		
 		this.start();
@@ -326,22 +328,21 @@ class Tetris extends JPanel implements KeyListener, ActionListener,
 	
 	public Tetris() {
 		
-		gameBlock = new GameObject(); 				// create game blocks
-		gameBoard = new GameObject(); 				// create game board
-		nextBlock = new GameObject(); 				// create next block
+		gameBlock = new GameObject();					// create game blocks
+		gameBoard = new GameObject();					// create game board
+		nextBlock = new GameObject();					// create next block
+		
+	
+		blockImage = new BufferedImage[BLOCK_THEMES_TOTAL][7];	// set space for block images
+		backgroundImage = new BufferedImage[BKGD_TOTAL];		// set space for background image
+		soundOn = true;									// turn sound on
 
-		blockImage = new BufferedImage[BLOCK_THEMES_TOTAL][7]; 	// set space for
-																// block images
-		backgroundImage = new BufferedImage[BKGD_TOTAL];		// set space for
-																// background image
-		soundOn = true; 							// turn sound on
+		image = new MyImage();							// initiate class to load image
+		loadGameImage();								// load all image for tetris
+		setNextBlock();									// set the type of next brick
+		setGame();										// initiate more values
 
-		image = new MyImage(); 						// initiate class to load image
-		loadGameImage(); 							// load all image for tetris
-		setNextBlock();								// set the type of next brick
-		setGame();									// initiate more values
-
-		gameTimer = new Timer(gameSpeed, this);		// create timer for tetris
+		gameTimer = new Timer(gameSpeed, this);			// create timer for tetris
 		
 		//
 		// add mouse and key listener
