@@ -1,16 +1,5 @@
 package games;
 
-/**
- A Tetris game that allows the player to change the look or 
- theme of the game while playing. Instead of looking at the 
- same type of bricks and background throughout the game, 
- the player has the ability to change the brick type and 
- background image whenever their game play becomes stale, 
- thus insuring a longer and more enjoyable game play. 
-
- Author: Michael Rose date created: 07/10/2015
-
- */
 
 import java.awt.Color;
 
@@ -523,26 +512,28 @@ class Tetris extends JPanel implements KeyListener, ActionListener,
 				"remove_blocks.wav",
 				"rotate.wav",
 				"sound8.wav"};
+				//"sound56.wav"};
 		
 		if(soundOn)
 			loadGameSound(filename[index]);
 	}
 	
 	public void loadGameSound(String filename) {
-
+		
 		try {
-
-			Clip clip = AudioSystem.getClip();
-
-			AudioInputStream inputStream = AudioSystem.getAudioInputStream
-					(Tetris.class.getResource("/sounds/" + filename));
+			
+			 Clip clip = AudioSystem.getClip();
+			
+			AudioInputStream inputStream = AudioSystem.getAudioInputStream(
+					//Tetris.class.getResourceAsStream("/sounds/" + filename));
+			Tetris.class.getResource("/sounds/" + filename));
 			clip.open(inputStream);
 			clip.start();
-
-		} catch (Exception ex) {
+			
+		} catch(Exception ex) {
 			System.out.println("can't find " + filename + " file");
 		}
-
+		
 	}
 	
 	public boolean isTimeAnimated() {
@@ -701,7 +692,7 @@ class Tetris extends JPanel implements KeyListener, ActionListener,
 			//
 			g2d.drawImage(backgroundImage[backgroundTheme],0,0,getWidth(),getHeight(),null);
 
-			
+			//g2d.fillRect(425,75, 175,150);
 			draw.display(g2d, nextBlock);						// show next tetris brick
 			
 			if(turnOnGrid)										// display game grid
@@ -733,7 +724,7 @@ class Tetris extends JPanel implements KeyListener, ActionListener,
 			draw.display(g2d, gameBoard, blockImage[blockTheme]);	// draw game board
 			draw.display(g2d, gameBlock, blockImage[blockTheme]);	// draw tetris brick
 			
-		
+			//g2d.fillRoundRect(425,275, 175,300,30,30);
 
 		}
 		
@@ -836,7 +827,8 @@ class Tetris extends JPanel implements KeyListener, ActionListener,
 		} else if (quitGame) {					// if player quit game
 			keyPress = 0;
 			endGame = true;
-			
+			//savePlayerScore();
+			//System.out.println("save records !!!");
 		}
 
 		switch (keyPress) {						// read which key is press
@@ -914,7 +906,7 @@ class Tetris extends JPanel implements KeyListener, ActionListener,
 			// control dialog box
 			//
 			controlKeyBox = !controlKeyBox;
-			pauseGame = controlKeyBox;
+			pauseGame = controlKeyBox;// !pauseGame;
 			break;
 		}
 
@@ -1084,7 +1076,54 @@ class Tetris extends JPanel implements KeyListener, ActionListener,
 		else
 			gameTimer.setDelay(gameSpeed);		// return to normal timer speed
 	}
+/*
+	public static java.sql.Date getDate() {
+		long currentDate = System.currentTimeMillis();
+		return new java.sql.Date(currentDate);
+	}
+	
+	public void savePlayerScore() {
+		
+		if (totalScore > 0)
+			try {
+				recordScore();
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			
+	}
+	
+	public void recordScore() throws SQLException, ClassNotFoundException {
+		
+		String playerName = "unknown";
+		String queryStatement = "insert into records (name, score, level, date)"
+				+ "value (?,?,?,?)";
 
+		Class.forName("com.mysql.jdbc.Driver");
+		
+		Connection connect = DriverManager.getConnection(
+				"jdbc:mysql://localhost/MikeGames", "root", "pumkin");
+		
+		//Connection connect = DriverManager.getConnection(
+		//		"jdbc:mysql://127.10.12.130:3306/MikeGames","adminDAmUjhP","Z4A9yzKQr_X5");
+		
+		PreparedStatement statement = connect.prepareStatement(queryStatement);
+
+		statement.setString(1, playerName);
+		statement.setInt(2, totalScore);
+		statement.setInt(3, gameLevel);
+		statement.setDate(4, getDate());
+		statement.execute();
+
+		if (connect != null)
+			connect.close();
+		if (statement != null)
+			statement.close();
+
+	}
+*/
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		
