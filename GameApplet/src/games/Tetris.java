@@ -40,16 +40,18 @@ class Tetris extends JPanel implements KeyListener, ActionListener,
 
 	public Tetris() {
 
-		gameBlock = new GameBlock();
-		nextBlock = new GameBlock(); // create next block
-		gameBoard = new GameBoard(); // create game board
-
-		gameSound = new GameSound();
-		gameStats = new GameStats();
-		gameImage = new GameImage();
-
-		gameControls = new GameControls();
+		
+		gameBlock = Game.block();
+		nextBlock = Game.block();
+		gameBoard = Game.board();
+		
+		gameSound = Game.sound();
+		gameStats = Game.stats();
+		gameImage = Game.image();
+		
+		gameControls = Game.controls();
 		gameSound.setSoundOn(true);
+
 		setGame(); // initiate more values
 
 		gameTimer = new Timer(gameControls.getGameSpeed(), this);
@@ -103,14 +105,14 @@ class Tetris extends JPanel implements KeyListener, ActionListener,
 
 
 	public boolean isTimeAnimated() {
+		
 		// check if animation is on
-		if (animateTime % 2 > 0) 
-			return true;
-		return false;
+		return (animateTime % 2 > 0) ? true : false;
 
 	}
 
 	public void checkGameBoardRow() {
+		
 		 // check if brick row is fill
 		while (gameBoard.isRowFull()) {
 			gameBoard.invertRow();
@@ -148,13 +150,18 @@ class Tetris extends JPanel implements KeyListener, ActionListener,
 	@Override
 	public void paintComponent(Graphics g) {
 		this.paintComponents(g);
+		
 		Graphics2D g2d = (Graphics2D) g;
+		
 		 // add anti aliasing to fonts
 		setRenderingFonts(g2d);
+		
 		// gameLevel;
 		int tempLevel = gameStats.getGameLevel();
+		
 		// start game timer
 		gameTimer.start(); 
+		
 		// check if row is fill with bricks
 		checkGameBoardRow(); 
 
@@ -167,13 +174,17 @@ class Tetris extends JPanel implements KeyListener, ActionListener,
 			gameBoard.dropBlock();
 		else
 			animateTime--;
+		
 		// if brick is remove play gameSound
 		if (animateTime == 4) 
 			gameSound.playRemoveBlocks();
+		
 		// get game points, level and line count
 		setGameStatistics(); 
+		
 		// as level increase so does speed
 		setGameSpeed(); 
+		
 		 // draw all image
 		drawGameSprites(g2d);
 
@@ -259,16 +270,20 @@ class Tetris extends JPanel implements KeyListener, ActionListener,
 			//
 			g2d.drawImage(gameImage.getBackgroundImage(), 0, 0, getWidth(),
 					getHeight(), null);
+			
 			// show next tetris brick
 			draw.display(nextBlock); 
+			
 			// display game grid
 			if (gameControls.isTurnOnGrid()) 
 				draw.displayCheckerImage(gameBoard);
 
 			else
 				draw.setBackground(gameBoard, Color.BLACK);
+			
 			// draw game board
 			draw.display(gameBoard); 
+			
 			// draw tetris brick
 			draw.display(gameBlock); 
 
@@ -281,6 +296,7 @@ class Tetris extends JPanel implements KeyListener, ActionListener,
 					getHeight(), null);
 
 			draw.display(nextBlock, gameImage.getBlockImage());
+			
 			// display game grid
 			if (gameControls.isTurnOnGrid())
 				draw.displayCheckerImage(gameBoard);
@@ -290,6 +306,7 @@ class Tetris extends JPanel implements KeyListener, ActionListener,
 
 			// draw game board
 			draw.display(gameBoard, gameImage.getBlockImage());
+			
 			// draw tetris blocks
 			draw.display(gameBlock, gameImage.getBlockImage());
 
@@ -311,8 +328,10 @@ class Tetris extends JPanel implements KeyListener, ActionListener,
 	}
 
 	public void addObjectToBackground() {
+		
 		// add tetris brick to game board
 		gameBoard.add(gameBlock); 
+		
 		// update tetris brick value
 		setBlocks(); 
 	}
@@ -331,6 +350,7 @@ class Tetris extends JPanel implements KeyListener, ActionListener,
 		
 		// get key player press
 		int keyPress = e.getKeyCode(); 
+		
 		boolean bRotate = false;
 
 		//
