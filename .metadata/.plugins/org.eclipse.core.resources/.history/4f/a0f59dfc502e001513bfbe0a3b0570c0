@@ -1,0 +1,17 @@
+package games;
+
+public class Sound {
+	
+	private boolean soundOn;
+
+	public Sound() {}
+
+	public boolean isSoundOn() {
+		return soundOn;
+	}
+
+	public void setSoundOn(boolean soundOn) {
+		this.soundOn = soundOn;
+	}
+	
+}

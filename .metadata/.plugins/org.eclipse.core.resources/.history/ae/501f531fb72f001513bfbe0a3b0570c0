@@ -1,0 +1,316 @@
+package games;
+
+import java.awt.Point;
+import java.util.ArrayList;
+
+/**
+ * 
+ * GameObjects Create tetris bricks and game board.
+ *
+ */
+
+class GameObject {
+	private int[] blockIndex;
+	private int blockWidth;
+	private int blockHeight;
+	private int blockPosX;
+	private int blockPosY;
+	private int blockSize;
+	
+	private int outlineX;
+	private int outlineY;
+	private int outlineWidth;
+	private int outlineHeight;
+	
+	private ArrayList<Point> blockLocation;
+	
+	public GameObject() {};
+	public GameObject(int [] blockIndex,int blockWidth, int blockHeight,int size) {
+		
+		//
+		// initiate object
+		//
+		this.setObject(blockIndex,blockWidth,blockHeight,size);
+	}
+	
+	
+	public void setObject(int [] blockIndex,int blockWidth, int blockHeight,int size) {
+		
+		//
+		// set all values
+		//
+		this.blockWidth = blockWidth;
+		this.blockHeight = blockHeight;
+		blockPosX = 0;
+		blockPosY = 0;
+		blockSize = size;
+		setBlockLocation();
+		setObject(blockIndex);
+	}
+	public void setBlockLocation() {
+		blockLocation = new ArrayList<>();
+
+	}
+	public void setObject(int [] blockIndex) {
+		this.blockIndex = blockIndex;
+	}
+	public void setOutline() {
+		 outlineX = blockPosX;
+		 outlineY = blockPosY;
+		 outlineWidth = blockSize * blockWidth;
+		 outlineHeight = blockSize * blockHeight;
+		
+	}
+	public void setBlockPos() {
+		int locate_X = blockPosX;
+		int locate_Y = blockPosY;
+		int index = 0;
+		blockLocation.clear();
+	
+		
+		for (int y = 0; y < blockHeight; y++) {
+			for (int x = 0; x < blockWidth; x++) {
+				
+				//
+				// add new block position
+				//
+				if (blockIndex[index] > 0)  
+					blockLocation.add(new Point(locate_X,locate_Y));
+
+				locate_X += blockSize;
+				index++;
+			}
+			locate_X = blockPosX;
+			locate_Y += blockSize;
+		}
+	}
+	public int getBlockPosSize() {
+		return blockLocation.size();
+	}
+	public int getBlockPosX(int index) {
+		return blockLocation.get(index).x;
+	}
+	public int getBlockPosY(int index) {
+		return blockLocation.get(index).y;
+	}
+	public int getBlockIndexValue() {
+		for(int i = 0; i < blockIndex.length; i++)
+			if(blockIndex[i] > 0) 
+				return blockIndex[i];
+		return 0;
+	}
+	public ArrayList<Point> getBlockPos() {
+		return blockLocation;
+	}
+	public Point getBlockPos(int index) {
+		return blockLocation.get(index);
+	}
+	public int getBlockIndex(int num) {
+		return blockIndex[num];
+	}
+	
+	public void dropBlock() {
+		int size = blockIndex.length;
+		int count = size - 1;
+		int[] newBlocks = new int[size];
+		
+		for(int i = size - 1; i >= 0; i--) {
+			
+			//
+			// pull tetris brick down
+			// one row at a time
+			//
+			if(blockIndex[i] >= 0) {
+				newBlocks[count] = blockIndex[i];
+				count --;
+			}
+		}
+		
+		blockIndex = newBlocks;
+		setBlockPos();
+	}
+	public boolean hasObject(GameObject gameObject) {
+		
+		for (int i = 0; i < gameObject.getBlockPosSize(); i++) {
+			
+			//
+			// if tetris pieces do not overlapped
+			// other pieces
+			//
+			if(blockLocation.contains(gameObject.getBlockPos(i)))
+				return true;
+		}
+		
+		return false;
+	}
+	public void add(GameObject gameObject) {
+		int index = 0;
+		int locate_X = blockPosX;
+		int locate_Y = blockPosY;
+		boolean value = false;
+		int blockSize = gameObject.getBlockSize();
+		
+		for(int y = 0; y < this.blockHeight; y++ ) {
+			for(int x = 0; x < this.blockWidth; x++) {
+				
+				//
+				// if tetris pieces do not overlapped
+				// other pieces
+				//
+				value = gameObject.blockLocation.contains(new Point(locate_X,locate_Y));
+				
+				//
+				// add tetris pieces to board
+				//
+				if(value)
+					blockIndex[index] = gameObject.getBlockIndexValue();
+
+				locate_X += blockSize;
+				index ++;
+			}
+			locate_X = blockPosX;
+			locate_Y += blockSize;
+		}
+		setBlockPos();				// update block position
+		
+	}
+	public int getFullRow() {
+		int index = blockIndex.length - 1;
+		int count = 0;
+		
+		for (int y = blockHeight; y > 0; y--) {
+			for (int x = blockWidth; x > 0; x--) {
+				
+				//
+				// count brick pieces that
+				// are in a row
+				//
+				if(blockIndex[index] > 0)		
+					count ++;
+				
+				index --;
+			}
+			
+			//
+			// if brick pieces equal block amount
+			// then return row number
+			//
+			if(count == blockWidth)			
+				return y;
+			count = 0;
+			
+		}
+		return -1;
+	}
+	public boolean isRowFull() {
+		
+		boolean bFlag = false;
+		
+		//
+		// if tetris brick pieces are in a row
+		//
+		if(getFullRow() > 0) bFlag = true;
+		
+		return bFlag;
+	}
+	public void invertRow() {
+		
+		int row = getFullRow();
+		int index = blockIndex.length - 1;
+		
+		for (int y = blockHeight; y > 0; y--) {
+			for (int x = blockWidth; x > 0; x--) {
+				
+				//
+				// invert row of tetris brick pieces
+				//
+				if(row == y)
+					blockIndex[index] = blockIndex[index] * -1;
+				
+				index --;
+			}
+		}
+	}
+	
+	public boolean inBound(GameObject gameObject) {
+		int locate_X = 0;
+		int locate_Y = 0;
+		int blockWidth = outlineX + outlineWidth;
+		int blockHeight = outlineY + outlineHeight;
+		
+		for(int i = 0; i < gameObject.getBlockPosSize(); i++) {
+			locate_X = gameObject.getBlockPosX(i);
+			locate_Y = gameObject.getBlockPosY(i);
+
+			//
+			// if tetris brick is in bound
+			//
+			if(locate_X < outlineX || locate_X >= blockWidth || locate_Y >= blockHeight)
+				return false;
+		}
+		return true;
+	}
+
+	public void setBlockPosition (int blockPosX, int blockPosY) {
+		this.blockPosX = blockPosX;
+		this.blockPosY = blockPosY;
+		setBlockPos();
+		setOutline();
+	}
+	public void setBlockPosX(int blockPosX) {
+		this.blockPosX = blockPosX;
+	}
+	public int getBlockPosX() {
+		return blockPosX;
+	}
+	public void setBlockPosY(int blockPosY) {
+		this.blockPosY = blockPosY;
+	}
+	public int getBlockPosY() {
+		return blockPosY;
+	}
+	public int getBlockWidth() {
+		return blockWidth;
+	}
+	public int getBlockHeight() {
+		return blockHeight;
+	}
+	public int getOutlineX() {
+		return outlineX;
+	}
+	public int getOutlineY() {
+		return outlineY;
+	}
+	public int getOutlineWidth() {
+		return outlineWidth;
+	}
+	public int getOutlineHeight() {
+		return outlineHeight;
+	}
+	public int getBlockSize() {
+		return blockSize;
+	}
+	public void setBlockSize(int blockSize) {
+		this.blockSize = blockSize;
+	}
+	
+	public void setBlockWidth(int blockWidth) {
+		this.blockWidth = blockWidth;
+	}
+	public void setBlockHeight(int blockHeight) {
+		this.blockHeight = blockHeight;
+	}
+	public String toString() {
+		return blockLocation.toString();
+	}
+	public int[] getBlockIndex() {
+		return blockIndex;
+	}
+	public void setBlockIndex(int[] blockIndex) {
+		this.blockIndex = blockIndex;
+	}
+	public void setBlockPos(ArrayList<Point> blockLocation) {
+		this.blockLocation = blockLocation;
+	}
+	
+}

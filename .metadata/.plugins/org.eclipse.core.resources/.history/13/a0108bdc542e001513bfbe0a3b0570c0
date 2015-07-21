@@ -1,0 +1,27 @@
+package games;
+
+public class GameStats {
+	private static final int GAME_POINTS = 250;
+	private int totalScore;
+	private int countLines;
+	private int totalLines;
+
+	public GameStats() {
+	}
+
+	public int getTotalScore() {
+		return totalScore;
+	}
+
+	public void setTotalScore(int totalScore) {
+		this.totalScore = totalScore;
+	}
+	
+	public void setStats() {
+		if (countLines > 0) {
+			totalScore += countLines * GAME_POINTS;
+			totalLines += countLines;
+			countLines = 0;
+		}
+	}
+}

@@ -1,0 +1,17 @@
+package games;
+
+public class GameStats {
+	private int totalScore;
+
+	public GameStats() {
+	}
+
+	public int getTotalScore() {
+		return totalScore;
+	}
+
+	public void setTotalScore(int totalScore) {
+		this.totalScore = totalScore;
+	}
+
+}

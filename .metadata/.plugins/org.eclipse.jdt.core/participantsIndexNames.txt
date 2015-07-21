@@ -1,3 +1,0 @@
-INDEX VERSION 1.127
-/Users/mike7544/Public/workspace/.metadata/.plugins/org.eclipse.jst.jsp.core/jspsearch/2498566709.index
-/MikeGames/src

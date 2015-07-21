@@ -1,0 +1,65 @@
+package games;
+
+import java.awt.image.BufferedImage;
+
+public class GameImage {
+	private static final int BKGD_TOTAL = 15;
+
+	private BufferedImage[][] blockImage;
+	private BufferedImage[] backgroundImage;
+	private BufferedImage endGameImage;
+	private BufferedImage soundOnImage;
+	private BufferedImage soundOffImage;
+	private BufferedImage controlKeyImage;
+	private BufferedImage escKeyImage;
+
+	private BufferedImage logoTextLevel;
+	private BufferedImage logoTextLines;
+	private BufferedImage logoTextNext;
+	private BufferedImage logoTextScore;
+	
+	public GameImage() {
+		
+	}
+	public void setImage(int totalThemes, int totalBlocks) {
+		blockImage = new BufferedImage[totalThemes][totalBlocks];
+		backgroundImage = new BufferedImage[BKGD_TOTAL];
+		
+		
+	}
+	
+	public BufferedImage[][] getBlockImage() {
+		return blockImage;
+	}
+	public BufferedImage[] getBackgroundImage() {
+		return backgroundImage;
+	}
+	public BufferedImage getEndGameImage() {
+		return endGameImage;
+	}
+	public BufferedImage getSoundOnImage() {
+		return soundOnImage;
+	}
+	public BufferedImage getSoundOffImage() {
+		return soundOffImage;
+	}
+	public BufferedImage getControlKeyImage() {
+		return controlKeyImage;
+	}
+	public BufferedImage getEscKeyImage() {
+		return escKeyImage;
+	}
+	public BufferedImage getLogoTextLevel() {
+		return logoTextLevel;
+	}
+	public BufferedImage getLogoTextLines() {
+		return logoTextLines;
+	}
+	public BufferedImage getLogoTextNext() {
+		return logoTextNext;
+	}
+	public BufferedImage getLogoTextScore() {
+		return logoTextScore;
+	}
+	
+}

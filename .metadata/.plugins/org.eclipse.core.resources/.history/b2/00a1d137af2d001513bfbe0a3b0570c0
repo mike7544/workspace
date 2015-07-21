@@ -1,0 +1,93 @@
+package games;
+
+import java.util.Random;
+
+public class GameBlock extends GameObject {
+	private static final int AMOUNT_OF_BLOCKS = 6;		
+	private static final int ROTATE_AMOUNT = 3;
+
+	private static final int BLOCK_WIDTH = 4;
+	private static final int BLOCK_HEIGHT = 4;
+
+	private static final int BLOCK_POS_X = 175;
+	private static final int BLOCK_POS_Y = 50;
+	private static final int BLOCK_SIZE = 25;
+	
+	private int blockType;
+	private int blockRotate;
+	
+	public GameBlock() {
+
+		setBlockDimension();
+		setBlockLocation();
+		setBlockIndex(GameBlocks.getBlock(blockType, blockRotate));
+
+	}
+
+	public int getBlockType() {
+		return blockType;
+	}
+
+	public void setBlockType(int blockType) {
+		this.blockType = blockType;
+	}
+
+	public int getBlockRotate() {
+		return blockRotate;
+	}
+
+	public void setBlockRotate(int blockRotate) {
+		this.blockRotate = blockRotate;
+	}
+	public void setNextBlock() {
+		Random randomizer = new Random();
+		blockType = randomizer.nextInt(AMOUNT_OF_BLOCKS + 1);
+		blockRotate = 0;
+	}
+	public void getNextBlock() {
+		setBlockIndex(GameBlocks.getBlock(blockType, blockRotate)); 
+		//setBlockPos();
+	}
+	public void resetBlock() {
+		setBlockPosX(BLOCK_POS_X);
+		setBlockPosY(BLOCK_POS_Y);
+		blockRotate = 0;
+	}
+	public void rotateBlock() {
+		if (blockRotate < ROTATE_AMOUNT) 
+			blockRotate++;
+		else
+			blockRotate = 0;
+		getNextBlock();
+		setBlockPos();
+		
+
+	}
+	public void moveBlockRight() {
+		int moveRight = getBlockPosX() + BLOCK_SIZE;
+		setBlockPosX(moveRight);
+		setBlockPos();
+
+	}
+	public void moveBlockLeft() {
+		int moveLeft = getBlockPosX() - BLOCK_SIZE;
+		setBlockPosX(moveLeft);
+		setBlockPos();
+
+	}
+	public void moveBlockDown() {
+		int moveDown = getBlockPosY() + BLOCK_SIZE;
+		setBlockPosY(moveDown);
+		setBlockPos();
+
+	}
+	public void setBlockDimension() {
+		setBlockPosX(BLOCK_POS_X);
+		setBlockPosY(BLOCK_POS_Y);
+		setBlockHeight(BLOCK_HEIGHT);
+		setBlockWidth(BLOCK_WIDTH);
+		setBlockSize(BLOCK_SIZE);
+		
+		
+	}
+}

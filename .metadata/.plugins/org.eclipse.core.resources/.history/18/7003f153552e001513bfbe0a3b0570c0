@@ -1,0 +1,52 @@
+package games;
+
+public class GameStats {
+	private static final int GAME_POINTS = 250;
+	private int totalScore;
+	private int countLines;
+	private int totalLines;
+	private int gameLevel;
+
+	public GameStats() {
+	}
+
+	public int getTotalScore() {
+		return totalScore;
+	}
+
+	public void setTotalScore(int totalScore) {
+		this.totalScore = totalScore;
+	}
+	
+	public int getCountLines() {
+		return countLines;
+	}
+
+	public void setCountLines(int countLines) {
+		this.countLines = countLines;
+	}
+
+	public int getTotalLines() {
+		return totalLines;
+	}
+
+	public void setTotalLines(int totalLines) {
+		this.totalLines = totalLines;
+	}
+
+	public int getGameLevel() {
+		return gameLevel;
+	}
+
+	public void setGameLevel(int gameLevel) {
+		this.gameLevel = gameLevel;
+	}
+
+	public void setStats() {
+		if (countLines > 0) {
+			totalScore += countLines * GAME_POINTS;
+			totalLines += countLines;
+			countLines = 0;
+		}
+	}
+}
