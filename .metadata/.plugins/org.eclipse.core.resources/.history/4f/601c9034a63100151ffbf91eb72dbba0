@@ -1,0 +1,29 @@
+package gameFX;
+
+import javafx.application.Application;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
+import javafx.stage.Stage;
+
+public class Tetris extends Application {
+
+	@Override
+	public void start(Stage primaryStage) {
+		primaryStage.setTitle("Drawing Text");
+        Group root = new Group();
+        Scene scene = new Scene(root, 300, 250, Color.WHITE);
+        Remove r = new Remove();
+        root.getChildren().add(r);//text);
+        
+
+        primaryStage.setScene(scene);
+        primaryStage.show();
+	}
+
+	public static void main(String[] args) {
+		launch(args);
+	}
+}
+

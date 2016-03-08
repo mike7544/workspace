@@ -1,0 +1,10 @@
+package gameFX;
+
+
+
+public class Draw {
+
+	public static void circle() {
+		System.out.println("mikey");
+	}
+}

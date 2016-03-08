@@ -1,0 +1,17 @@
+package gameFX;
+
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
+
+public class Remove {
+    int x = 100;
+    int y = 100;
+    int red = 30;
+    int green = 40;
+    int blue = 50;
+
+    Text text = new Text(x, y, "JavaFX 2.0");
+
+    text.setFill(Color.rgb(red, green, blue, .99));
+    text.setRotate(60);
+}

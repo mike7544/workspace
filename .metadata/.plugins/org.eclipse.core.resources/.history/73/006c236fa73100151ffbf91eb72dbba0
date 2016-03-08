@@ -1,0 +1,10 @@
+package gameFX;
+
+
+
+public class Remove {
+
+	public void text() {
+		System.out.println("mikey");
+	}
+}

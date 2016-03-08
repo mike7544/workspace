@@ -1,0 +1,14 @@
+package gameFX;
+
+import javafx.scene.shape.Circle;
+
+public class Draw {
+
+	public static Circle ball() {
+		Circle circle = new Circle();
+		circle.setCenterX(100.0f);
+		circle.setCenterY(100.0f);
+		circle.setRadius(50.0f);
+
+	}
+}

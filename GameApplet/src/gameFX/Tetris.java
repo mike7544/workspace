@@ -1,0 +1,28 @@
+package gameFX;
+
+import javafx.application.Application;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
+public class Tetris extends Application {
+
+	@Override
+	public void start(Stage primaryStage) {
+		primaryStage.setTitle("Text Fonts");
+        Group root = new Group();
+        Scene scene = new Scene(root, 800,600);
+
+     
+        
+        root.getChildren().add(Draw.circle());
+
+        primaryStage.setScene(scene);
+        primaryStage.show();
+	}
+
+	public static void main(String[] args) {
+		launch(args);
+	}
+}
+

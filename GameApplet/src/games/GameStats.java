@@ -49,11 +49,10 @@ public class GameStats {
 		this.gameLevel = gameLevel;
 	}
 	public void setStats() {
-		setTotalScore(0);
-		setGameLevel(1);
-		setTotalLines(0);
-		setCountLines(0);
-
+		totalScore = 0;
+		totalLines = 0;
+		countLines = 0;
+		gameLevel = 1;
 	}
 	public void setGamePoints() {
 		if (countLines > 0) {
@@ -61,6 +60,7 @@ public class GameStats {
 			totalLines += countLines;
 			countLines = 0;
 		}
+		changeLevel();
 	}
 	public void changeLevel() {
 		gameLevel = (totalLines / GAME_MOVE_UP_LEVEL) + 1;
